@@ -30,6 +30,7 @@
         }
         body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #0f172a; }
         
+        /* منع تقطيع البند الواحد فقط في منتصف الصفحة */
         .avoid-break {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
@@ -563,7 +564,7 @@
 
             data.forEach((cat, cIdx) => {
                 const catCard = document.createElement('div');
-                catCard.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-print avoid-break mb-6';
+                catCard.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-print mb-6';
                 
                 let html = `
                 <div class="bg-slate-900 text-white px-4 md:px-6 py-3 font-extrabold text-sm md:text-base flex justify-between items-center border-b border-slate-800">
@@ -575,9 +576,9 @@
                 cat.items.forEach((item, iIdx) => {
                     const radioName = `status_${cIdx}_${iIdx}`;
                     html += `
-                    <div class="py-3.5 md:py-4 first:pt-1 last:pb-1">
+                    <div class="py-3.5 md:py-3 avoid-break">
                         <!-- رقم الفقرة والنص متجاوب 100% -->
-                        <div class="flex items-start gap-3 mb-3">
+                        <div class="flex items-start gap-3 mb-2">
                             <span class="bg-slate-900 text-white font-extrabold text-xs px-2.5 py-1 rounded-lg shrink-0 mt-0.5 shadow-sm">
                                 ${iIdx + 1}
                             </span>
@@ -590,15 +591,15 @@
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center pr-0 md:pr-9">
                             <!-- الأزرار الثلاثة واسعة وواضحة للضغط بالأصبع -->
                             <div class="md:col-span-6 grid grid-cols-3 gap-2 font-bold text-xs">
-                                <label class="cursor-pointer border-2 border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 rounded-xl p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
+                                <label class="cursor-pointer border-2 border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 rounded-xl p-2 md:p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
                                     <input type="radio" name="${radioName}" value="yes" checked class="accent-emerald-600 w-4 h-4">
                                     <span>نعم</span>
                                 </label>
-                                <label class="cursor-pointer border-2 border-red-300 bg-red-50 text-red-900 hover:bg-red-100 rounded-xl p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
+                                <label class="cursor-pointer border-2 border-red-300 bg-red-50 text-red-900 hover:bg-red-100 rounded-xl p-2 md:p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
                                     <input type="radio" name="${radioName}" value="no" class="accent-red-600 w-4 h-4">
                                     <span>لا</span>
                                 </label>
-                                <label class="cursor-pointer border-2 border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
+                                <label class="cursor-pointer border-2 border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl p-2 md:p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
                                     <input type="radio" name="${radioName}" value="na" class="accent-slate-600 w-4 h-4">
                                     <span>لا ينطبق</span>
                                 </label>
@@ -606,7 +607,7 @@
 
                             <!-- خانة تسجيل الملاحظة -->
                             <div class="md:col-span-6">
-                                <input type="text" placeholder="إضافة ملاحظة على هذه الفقرة (إن وجدت)..." class="w-full p-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition">
+                                <input type="text" placeholder="إضافة ملاحظة على هذه الفقرة (إن وجدت)..." class="w-full p-2 md:p-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition">
                             </div>
                         </div>
                     </div>`;
@@ -665,12 +666,17 @@
             const facName = document.getElementById('facilityName').value || "تقرير_كشف_ميداني";
             
             const opt = {
-                margin:       [0.2, 0.2, 0.2, 0.2],
+                margin:       [0.25, 0.25, 0.25, 0.25],
                 filename:     `${facName}_تقرير_طوارئ_وزارة_الشؤون_الإسلامية.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, enableBackground: true },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    enableBackground: true,
+                    windowWidth: 1024 // تحويل الشاشة لعرض الكمبيوتر المنظم أثناء الحفظ
+                },
                 jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+                pagebreak:    { mode: ['css', 'legacy'] }
             };
 
             return html2pdf().set(opt).from(element).save();
