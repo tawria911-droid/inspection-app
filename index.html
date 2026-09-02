@@ -31,23 +31,31 @@
         }
         body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #0f172a; }
         
-        /* منع تقطيع الفقرات بين الصفحات */
-        .avoid-break {
+        /* منع تقطيع عناصر الأسئلة والتوقيع بين الصفحات */
+        .item-avoid-break {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
         }
 
-        /* تنسيق خاص أثناء إنشاء الـ PDF لمنع الصفحات البيضاء */
-        body.generating-pdf {
+        /* حل مشكلة الجوال: إجبار العرض الكامل (Desktop View) أثناء التصدير للـ PDF */
+        body.pdf-export {
+            width: 850px !important;
+            min-width: 850px !important;
+            max-width: 850px !important;
+            margin: 0 auto !important;
+            padding: 10px !important;
             background: #ffffff !important;
+            overflow: visible !important;
         }
-        body.generating-pdf .no-print {
+        body.pdf-export .no-print {
             display: none !important;
         }
-        body.generating-pdf #inspectionForm {
+        body.pdf-export main,
+        body.pdf-export #inspectionForm {
+            width: 100% !important;
+            max-width: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
-            max-width: 100% !important;
         }
 
         @media print {
@@ -98,7 +106,7 @@
         <form id="inspectionForm" onsubmit="event.preventDefault();">
             
             <!-- هيدر التقرير -->
-            <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 card-print avoid-break">
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 card-print item-avoid-break">
                 <div class="flex justify-between items-center border-b-2 border-emerald-600 pb-4 mb-4">
                     <div>
                         <h2 class="text-base md:text-lg font-extrabold text-emerald-800">وزارة الشؤون الإسلامية والدعوة والإرشاد</h2>
@@ -109,7 +117,7 @@
                         <span class="bg-slate-900 text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full block mb-1">تقرير ميداني رسمي</span>
                         <h2 class="text-xs md:text-base font-extrabold text-slate-900" id="sectionTitle">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها</h2>
                     </div>
-                    <div class="text-left text-[10px] md:text-xs text-slate-600 hidden sm:block">
+                    <div class="text-left text-[10px] md:text-xs text-slate-600">
                         <p class="font-bold text-slate-800">رؤية المملكة 2030</p>
                         <p class="text-emerald-700 font-bold">السلامة والوقاية أولاً</p>
                     </div>
@@ -153,7 +161,7 @@
             <div id="checklistContainer" class="space-y-6"></div>
 
             <!-- التوقيعات والاعتماد -->
-            <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 mt-6 card-print avoid-break">
+            <div class="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-200 mt-6 card-print item-avoid-break">
                 <h3 class="text-md font-bold text-slate-900 border-b pb-3 mb-6 flex items-center gap-2">
                     <i class="fa-solid fa-file-signature text-emerald-600"></i> التوقيعات والاعتماد الرسمي للتقرير
                 </h3>
@@ -561,7 +569,7 @@
                 ]
             },
             {
-                title: "ثالثاً: أنظمة الوقاية والحريق بالمرق",
+                title: "ثالثاً: أنظمة الوقاية والحريق بالمستودع",
                 items: [
                     "سلامة عمل شبكة الرش الآلي (Sprinklers) وتغطيتها للبضائع.",
                     "توفر طفايات حريق كبيرة (بودرة 25/50 كجم) وعربات متحركة.",
@@ -578,10 +586,10 @@
 
             data.forEach((cat, cIdx) => {
                 const catCard = document.createElement('div');
-                catCard.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-print mb-6 avoid-break';
+                catCard.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-print mb-6';
                 
                 let html = `
-                <div class="bg-slate-900 text-white px-4 md:px-6 py-3 font-extrabold text-sm md:text-base flex justify-between items-center border-b border-slate-800">
+                <div class="bg-slate-900 text-white px-4 md:px-6 py-3 font-extrabold text-sm md:text-base flex justify-between items-center border-b border-slate-800 item-avoid-break">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-emerald-400"></i> ${cat.title}</span>
                     <span class="bg-emerald-700 text-white text-xs px-2.5 py-0.5 rounded-full font-bold">${cat.items.length} فقرات</span>
                 </div>
@@ -590,7 +598,7 @@
                 cat.items.forEach((item, iIdx) => {
                     const radioName = `status_${cIdx}_${iIdx}`;
                     html += `
-                    <div class="py-3.5 md:py-3">
+                    <div class="py-3.5 md:py-3 item-avoid-break">
                         <div class="flex items-start gap-3 mb-2">
                             <span class="bg-slate-900 text-white font-extrabold text-xs px-2.5 py-1 rounded-lg shrink-0 mt-0.5 shadow-sm">
                                 ${iIdx + 1}
@@ -675,28 +683,32 @@
             const element = document.getElementById('inspectionForm');
             const facName = document.getElementById('facilityName').value || "تقرير_كشف_ميداني";
             
-            // تفعيل وضع الإنشاء لمنع أي مسافات بيضاء
-            document.body.classList.add('generating-pdf');
+            // إجبار العرض الكامل فوراً لمنع التشويه على شاشات الجوال
+            document.body.classList.add('pdf-export');
 
-            const opt = {
-                margin:       [8, 8, 8, 8],
-                filename:     `${facName}_تقرير_طوارئ_وزارة_الشؤون_الإسلامية.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: 2, 
-                    useCORS: true, 
-                    scrollY: 0,
-                    windowWidth: 1024
-                },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: 'css', avoid: '.avoid-break' }
-            };
+            setTimeout(() => {
+                const opt = {
+                    margin:       [8, 8, 8, 8],
+                    filename:     `${facName}_تقرير_طوارئ_وزارة_الشؤون_الإسلامية.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { 
+                        scale: 2, 
+                        useCORS: true,
+                        scrollX: 0,
+                        scrollY: 0,
+                        windowWidth: 1024
+                    },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    pagebreak:    { mode: ['css', 'legacy'] }
+                };
 
-            return html2pdf().set(opt).from(element).save().then(() => {
-                document.body.classList.remove('generating-pdf');
-            }).catch(() => {
-                document.body.classList.remove('generating-pdf');
-            });
+                html2pdf().set(opt).from(element).save().then(() => {
+                    document.body.classList.remove('pdf-export');
+                }).catch((err) => {
+                    document.body.classList.remove('pdf-export');
+                    console.error(err);
+                });
+            }, 300);
         }
 
         function sendPDFViaEmail(e) {
