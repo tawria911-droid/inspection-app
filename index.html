@@ -272,7 +272,7 @@
                 const day = parts.find(p => p.type === 'day').value;
                 const month = parts.find(p => p.type === 'month').value;
                 const year = parts.find(p => p.type === 'year').value;
-                return `${day} / ${month} /${year} هـ`;
+                return `${day} / ${month} / ${year} هـ`;
             } catch (e) {
                 return '';
             }
@@ -286,7 +286,7 @@
                     (position) => {
                         const lat = position.coords.latitude.toFixed(6);
                         const lng = position.coords.longitude.toFixed(6);
-                        gpsInput.value = `${lat},${lng}`;
+                        gpsInput.value = `${lat}, ${lng}`;
                     },
                     (error) => {
                         alert("⚠️ تعذر جلب الموقع تلقائياً.");
@@ -527,4 +527,91 @@
                                         <span>مطبق / سليم</span>
                                     </label>
                                     <label class="cursor-pointer flex items-center justify-center gap-1 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 py-1.5 px-3 rounded-xl text-xs font-bold transition">
-                                        <input type="radio" name="${fieldName}"
+                                        <input type="radio" name="${fieldName}" value="fail" class="accent-red-600">
+                                        <span>ملاحظة</span>
+                                    </label>
+                                    <label class="cursor-pointer flex items-center justify-center gap-1 bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-300 py-1.5 px-3 rounded-xl text-xs font-bold transition">
+                                        <input type="radio" name="${fieldName}" value="na" checked class="accent-slate-500">
+                                        <span>لا ينطبق</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2.5">
+                                <input type="text" placeholder="إضافة ملاحظة أو إجراء متخذ إن وجد..." class="w-full text-xs p-2 bg-white border border-slate-200 rounded-lg outline-none focus:border-emerald-500 font-semibold text-slate-700">
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                sectionEl.innerHTML = `
+                    <div class="bg-card-header text-white px-4 py-3 rounded-2xl mb-4 shadow-sm flex items-center justify-between header-avoid-break">
+                        <h3 class="text-xs md:text-sm font-bold tracking-wide">${section.title}</h3>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-mono px-2.5 py-0.5 rounded-full border border-emerald-400/30">${section.items.length} بنود</span>
+                    </div>
+                    <div class="space-y-3">
+                        ${itemsHTML}
+                    </div>
+                `;
+                container.appendChild(sectionEl);
+            });
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = 'tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all';
+            });
+
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            if (activeBtn) {
+                activeBtn.className = 'tab-btn border-b-4 border-emerald-600 text-emerald-800 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all';
+            }
+
+            const titleEl = document.getElementById('sectionTitle');
+            const mobileTitleEl = document.getElementById('sectionTitleMobile');
+            const lblFacility = document.getElementById('lblFacilityName');
+            const facilityInput = document.getElementById('facilityName');
+            const lblLoc = document.getElementById('lblLocation');
+
+            if (tab === 'mosques') {
+                titleEl.textContent = 'استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها';
+                mobileTitleEl.textContent = 'استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها';
+                lblFacility.innerHTML = 'اسم المسجد / الجامع <span class="text-red-600">*</span>';
+                facilityInput.placeholder = 'أدخل اسم المسجد كامل...';
+                lblLoc.textContent = 'موقع المسجد / الحي';
+                renderChecklist(mosquesChecklist);
+            } else if (tab === 'admin') {
+                titleEl.textContent = 'استمارة الكشف الميداني على المباني الإدارية والخدمية';
+                mobileTitleEl.textContent = 'استمارة الكشف الميداني على المباني الإدارية والخدمية';
+                lblFacility.innerHTML = 'اسم المبنى الإداري <span class="text-red-600">*</span>';
+                facilityInput.placeholder = 'أدخل اسم المبنى الإداري...';
+                lblLoc.textContent = 'الموقع / المدينة';
+                renderChecklist(adminChecklist);
+            } else if (tab === 'warehouses') {
+                titleEl.textContent = 'استمارة الكشف الميداني على المستودعات ومرافق التخزين';
+                mobileTitleEl.textContent = 'استمارة الكشف الميداني على المستودعات ومرافق التخزين';
+                lblFacility.innerHTML = 'اسم المستودع / المرفق <span class="text-red-600">*</span>';
+                facilityInput.placeholder = 'أدخل اسم المستودع...';
+                lblLoc.textContent = 'موقع المستودع / المنطقة';
+                renderChecklist(warehousesChecklist);
+            }
+        }
+
+        function printReport() {
+            document.body.classList.add('pdf-export');
+            window.print();
+            setTimeout(() => {
+                document.body.classList.remove('pdf-export');
+            }, 1000);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('inspectionDate');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = getFormattedHijriDate();
+            }
+            switchTab('mosques');
+        });
+    </script>
+</body>
+</html>
