@@ -31,13 +31,13 @@
         }
         body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #0f172a; }
         
-        /* منع تقطيع عناصر الأسئلة والتوقيع بين الصفحات */
+        /* منع تقطيع العناصر بين الصفحات */
         .item-avoid-break {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
         }
 
-        /* حل مشكلة الجوال: إجبار العرض الكامل (Desktop View) أثناء التصدير للـ PDF */
+        /* إصلاح حاسم للتصدير من الجوال: إجبار التقسيمات على أخذ شكل الشاشات الكبيرة */
         body.pdf-export {
             width: 850px !important;
             min-width: 850px !important;
@@ -45,17 +45,28 @@
             margin: 0 auto !important;
             padding: 10px !important;
             background: #ffffff !important;
-            overflow: visible !important;
         }
         body.pdf-export .no-print {
             display: none !important;
         }
-        body.pdf-export main,
+        body.pdf-export main, 
         body.pdf-export #inspectionForm {
             width: 100% !important;
             max-width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
+        }
+
+        /* إجبار شبكات Tailwind على العمل بنظام الكمبيوتر حتى على متصفح الجوال */
+        body.pdf-export .grid-cols-1.md\:grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        }
+        body.pdf-export .grid-cols-1.md\:grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        }
+        body.pdf-export .grid-cols-1.md\:grid-cols-12 {
+            grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+        }
+        body.pdf-export .md\:col-span-6 {
+            grid-column: span 6 / span 6 !important;
         }
 
         @media print {
@@ -683,25 +694,39 @@
             const element = document.getElementById('inspectionForm');
             const facName = document.getElementById('facilityName').value || "تقرير_كشف_ميداني";
             
-            // إجبار العرض الكامل فوراً لمنع التشويه على شاشات الجوال
+            // 1. تفعيل وضع الـ PDF لإجبار التنسيق على حجم الكمبيوتر
             document.body.classList.add('pdf-export');
 
-            setTimeout(() => {
-                const opt = {
-                    margin:       [8, 8, 8, 8],
-                    filename:     `${facName}_تقرير_طوارئ_وزارة_الشؤون_الإسلامية.pdf`,
-                    image:        { type: 'jpeg', quality: 0.98 },
-                    html2canvas:  { 
-                        scale: 2, 
-                        useCORS: true,
-                        scrollX: 0,
-                        scrollY: 0,
-                        windowWidth: 1024
-                    },
-                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    pagebreak:    { mode: ['css', 'legacy'] }
-                };
+            // 2. تحديث قيم الحقول في الـ DOM لضمان طباعتها بشكل كامل
+            const inputs = element.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    if (input.checked) input.setAttribute('checked', 'checked');
+                    else input.removeAttribute('checked');
+                } else {
+                    input.setAttribute('value', input.value);
+                }
+            });
 
+            // 3. إعدادات التصدير
+            const opt = {
+                margin:       [8, 8, 8, 8],
+                filename:     `${facName}_تقرير_طوارئ_وزارة_الشؤون_الإسلامية.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true,
+                    logging: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: 1024
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['css', 'legacy'] }
+            };
+
+            // مهلة 300ms ليقوم المتصفح بإعادة رسم الشاشة
+            setTimeout(() => {
                 html2pdf().set(opt).from(element).save().then(() => {
                     document.body.classList.remove('pdf-export');
                 }).catch((err) => {
