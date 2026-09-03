@@ -1,71 +1,635 @@
-async function sendPDFViaEmail(e) {
-    if (e) e.preventDefault();
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استمارة الكشف الميداني - فرع وزارة الشؤون الإسلامية بمكة المكرمة</title>
+    
+    <!-- الخطوط والأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-    // 1. جلب البيانات الأساسية
-    const facName = document.getElementById('facilityName')?.value.trim() || '';
-    const inspector = document.getElementById('inspectorName')?.value.trim() || '';
+    <style>
+        :root {
+            --primary: #047857;
+            --primary-hover: #065f46;
+            --secondary: #0284c7;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --input-bg: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --accent: #38bdf8;
+        }
 
-    if (!facName || !inspector) {
-        alert("⚠️ يرجى تعبئة اسم المسجد/المنشأة واسم معد التقرير أولاً.");
-        return;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        /* الهيدر والعناوين */
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #10b981;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .header h2 {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .sub-header {
+            background: rgba(4, 120, 87, 0.2);
+            color: #34d399;
+            padding: 10px 18px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: 1px solid rgba(52, 211, 153, 0.3);
+        }
+
+        .section-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin: 25px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* شبكة النماذج */
+        .grid-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.2);
+        }
+
+        .btn-gps {
+            background: #334155;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            transition: background 0.2s;
+        }
+
+        .btn-gps:hover {
+            background: #475569;
+        }
+
+        /* قائمة بنود الفحص */
+        .items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .check-item {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .check-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .item-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #f1f5f9;
+        }
+
+        .item-status {
+            background: #1e293b;
+            color: #fff;
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .item-note {
+            width: 100%;
+            background: #1e293b;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            resize: vertical;
+            min-height: 45px;
+            outline: none;
+        }
+
+        .item-note:focus {
+            border-color: var(--secondary);
+        }
+
+        /* الأزرار السفليّة */
+        .actions-container {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn-submit {
+            flex: 2;
+            min-width: 220px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-print {
+            flex: 1;
+            min-width: 160px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* تنسيقات الطباعة */
+        @media print {
+            body { background: white; color: black; padding: 0; }
+            .container { border: none; box-shadow: none; background: white; color: black; width: 100%; max-width: 100%; }
+            .actions-container, .btn-gps { display: none !important; }
+            .form-group input, .form-group select, .check-item, .item-note, .item-status {
+                background: white !important;
+                color: black !important;
+                border: 1px solid #ccc !important;
+            }
+            .header h1 { color: #047857; }
+            .sub-header { background: #e6f4ea; color: #047857; border: 1px solid #047857; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>وزارة الشؤون الإسلامية والدعوة والإرشاد</h1>
+        <h2>فرع منطقة مكة المكرمة - وحدة الطوارئ والأزمات والكوارث</h2>
+        <div class="sub-header">
+            <i class="fa-solid fa-clipboard-check"></i> استمارة الكشف والمسح الميداني الرسمي
+        </div>
+    </div>
+
+    <form id="inspectionForm" onsubmit="sendPDFViaEmail(event)">
+        <!-- البيانات الأساسية -->
+        <div class="section-title">
+            <i class="fa-solid fa-circle-info"></i> البيانات الأساسية للمنشأة
+        </div>
+
+        <div class="grid-form">
+            <div class="form-group">
+                <label for="facilityName">اسم المسجد / المنشأة *</label>
+                <input type="text" id="facilityName" required placeholder="أدخل اسم المسجد أو المنشأة">
+            </div>
+
+            <div class="form-group">
+                <label for="inspectorName">اسم معد التقرير *</label>
+                <input type="text" id="inspectorName" required placeholder="أدخل اسم المفتش / المعاين">
+            </div>
+
+            <div class="form-group">
+                <label for="inspectionDate">تاريخ الفحص *</label>
+                <input type="date" id="inspectionDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="location">الحي / المنطقة</label>
+                <input type="text" id="location" placeholder="مثال: حي الشوقية - مكة">
+            </div>
+
+            <div class="form-group">
+                <label for="gpsCoords">إحداثيات GPS</label>
+                <input type="text" id="gpsCoords" placeholder="انقر على الجلب أو أدخلها">
+                <button type="button" class="btn-gps" onclick="fetchGPS()">
+                    <i class="fa-solid fa-location-crosshairs"></i> جلب الموقع الحالي
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label for="serialNo">الرقم التسلسلي / الكود</label>
+                <input type="text" id="serialNo" placeholder="رقم المعاملة / الكود">
+            </div>
+
+            <div class="form-group">
+                <label for="maintenanceContractor">مؤسسة / مقاول الصيانة</label>
+                <input type="text" id="maintenanceContractor" placeholder="اسم الشركة أو المقاول">
+            </div>
+        </div>
+
+        <!-- بنود الفحص الميداني الـ 14 -->
+        <div class="section-title">
+            <i class="fa-solid fa-list-check"></i> بنود الكشف والتقييم الميداني (14 بنداً)
+        </div>
+
+        <div class="items-list">
+
+            <!-- بند 1 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">1. وسائل السلامة وأجهزة إطفاء الحريق</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر / مفقود">غير متوفر / مفقود</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الأول..."></textarea>
+            </div>
+
+            <!-- بند 2 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">2. التوصيلات واللوحات الكهربائية ومفاتيح القاطع</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر / مفقود">غير متوفر / مفقود</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الثاني..."></textarea>
+            </div>
+
+            <!-- بند 3 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">3. أنظمة الصوت والمايكروفونات والسماعات</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر / مفقود">غير متوفر / مفقود</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الثالث..."></textarea>
+            </div>
+
+            <!-- بند 4 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">4. أجهزة التكييف والتهوية</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر / مفقود">غير متوفر / مفقود</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الرابع..."></textarea>
+            </div>
+
+            <!-- بند 5 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">5. نظافة السجاد والفرش وجاهزيته</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة / غسيل</option>
+                        <option value="غير مستوفي للشروط">غير مستوفي للشروط</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الخامس..."></textarea>
+            </div>
+
+            <!-- بند 6 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">6. دورات المياه والمواضئ والتسريبات</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر / مفقود">غير متوفر / مفقود</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند السادس..."></textarea>
+            </div>
+
+            <!-- بند 7 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">7. النظافة العامة للساحات والأسوار</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج نظافة مكثفة">يحتاج نظافة مكثفة</option>
+                        <option value="غير مرضٍ">غير مرضٍ</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند السابع..."></textarea>
+            </div>
+
+            <!-- بند 8 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">8. سلامة الأبواب والنوافذ ومخارج الطوارئ</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر / مفقود">غير متوفر / مفقود</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الثامن..."></textarea>
+            </div>
+
+            <!-- بند 9 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">9. الإنارة الداخلية والخارجية</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر / مفقود">غير متوفر / مفقود</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند التاسع..."></textarea>
+            </div>
+
+            <!-- بند 10 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">10. خزانات المياه والمضخات علوية/سفلية</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر / مفقود">غير متوفر / مفقود</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند العاشر..."></textarea>
+            </div>
+
+            <!-- بند 11 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">11. مسارات ومرافق ذوي الإعاقة</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="غير متوفر">غير متوفر</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الحادي عشر..."></textarea>
+            </div>
+
+            <!-- بند 12 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">12. جاهزية المصاعد والسلالم الكهربائية</span>
+                    <select class="item-status">
+                        <option value="سليم / مكتمل">سليم / مكتمل</option>
+                        <option value="يحتاج صيانة">يحتاج صيانة</option>
+                        <option value="لا يوجد مصعد">لا يوجد مصعد</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الثاني عشر..."></textarea>
+            </div>
+
+            <!-- بند 13 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">13. التزام عمالة الصيانة والنظافة بالحضور</span>
+                    <select class="item-status">
+                        <option value="ملتزم بالكامل">ملتزم بالكامل</option>
+                        <option value="تقصير جزئي">تقصير جزئي</option>
+                        <option value="غير ملتزم">غير ملتزم</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="ملاحظات البند الثالث عشر..."></textarea>
+            </div>
+
+            <!-- بند 14 -->
+            <div class="check-item">
+                <div class="check-item-header">
+                    <span class="item-title">14. ملاحظات وتوصيات المعاين العامة</span>
+                    <select class="item-status">
+                        <option value="عادية">عادية</option>
+                        <option value="هام">هام</option>
+                        <option value="عاجل وطارئ">عاجل وطارئ</option>
+                    </select>
+                </div>
+                <textarea class="item-note" placeholder="توصيات إضافية وملاحظات شاملة..."></textarea>
+            </div>
+
+        </div>
+
+        <!-- الأزرار -->
+        <div class="actions-container">
+            <button type="submit" id="sendEmailBtn" class="btn-submit">
+                <i class="fa-solid fa-paper-plane"></i> إرسال إلى إيميل الوحدة
+            </button>
+            
+            <button type="button" class="btn-print" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> طباعة / حفظ PDF
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // تهيئة مفاتيح EmailJS
+    const EMAILJS_PUBLIC_KEY = "p0em28uG45VkqRcrN";
+    const EMAILJS_SERVICE_ID = "service_w1kg7u8";
+    const EMAILJS_TEMPLATE_ID = "template_k0n0gd8";
+
+    (function() {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+    })();
+
+    // تعيين تاريخ اليوم تلقائياً عند فتح الصفحة
+    document.addEventListener("DOMContentLoaded", function() {
+        const today = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('inspectionDate');
+        if (dateInput) dateInput.value = today;
+    });
+
+    // دالة جلب الموقع الجغرافي
+    function fetchGPS() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lng = position.coords.longitude.toFixed(6);
+                    document.getElementById('gpsCoords').value = `${lat}, ${lng}`;
+                    alert("✅ تم جلب الإحداثيات بنجاح!");
+                },
+                (error) => {
+                    alert("⚠️ تعذر جلب الموقع تلقائياً، يرجى إدخاله يدويًا.");
+                }
+            );
+        } else {
+            alert("⚠️ المتصفح لا يدعم جلب الموقع الجغرافي.");
+        }
     }
 
-    const btn = document.getElementById('sendEmailBtn') || document.querySelector('button[type="submit"]');
-    const originalHTML = btn ? btn.innerHTML : '';
-    if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال التقرير...`;
-    }
+    // دالة إرسال التقرير عبر EmailJS
+    async function sendPDFViaEmail(e) {
+        if (e) e.preventDefault();
 
-    try {
-        // 2. تجميع بيانات بنود الفحص والملاحظات تلقائياً من أي تصميم
-        let reportDetails = "";
-        
-        // البحث عن عناصر البنود في التصميم
-        const itemRows = document.querySelectorAll('.item-card, tr[data-item], .check-item, .form-group, fieldset, .card');
+        const facName = document.getElementById('facilityName')?.value.trim() || '';
+        const inspector = document.getElementById('inspectorName')?.value.trim() || '';
 
-        itemRows.forEach((item, index) => {
-            const titleEl = item.querySelector('.item-title, h4, label, td:first-child, strong');
-            const statusEl = item.querySelector('select, input[type="radio"]:checked');
-            const noteEl = item.querySelector('textarea, input[type="text"]:not(#facilityName):not(#inspectorName):not(#location):not(#gpsCoords):not(#serialNo):not(#maintenanceContractor)');
+        if (!facName || !inspector) {
+            alert("⚠️ يرجى تعبئة اسم المسجد/المنشأة واسم معد التقرير أولاً.");
+            return;
+        }
 
-            if (titleEl && (statusEl || noteEl)) {
-                const title = titleEl.innerText.trim();
-                const status = statusEl ? (statusEl.value || statusEl.nextSibling?.textContent?.trim()) : "سليم";
-                const note = noteEl && noteEl.value.trim() ? noteEl.value.trim() : "لا توجد ملاحظات";
+        const btn = document.getElementById('sendEmailBtn');
+        const originalHTML = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري إرسال التقرير...`;
+        }
+
+        try {
+            // تجميع بنود الفحص والملاحظات
+            let reportDetails = "";
+            const items = document.querySelectorAll('.check-item');
+
+            items.forEach((item, index) => {
+                const title = item.querySelector('.item-title')?.innerText.trim() || `البند ${index + 1}`;
+                const statusSelect = item.querySelector('.item-status');
+                const status = statusSelect ? statusSelect.value : "سليم / مكتمل";
+                
+                const noteInput = item.querySelector('.item-note');
+                const note = noteInput && noteInput.value.trim() ? noteInput.value.trim() : "لا توجد ملاحظات";
 
                 reportDetails += `${title}\n   • الحالة: ${status}\n   • الملاحظات: ${note}\n-----------------------------------\n`;
+            });
+
+            // تجهيز البيانات
+            const templateParams = {
+                facility_name: facName,
+                inspector_name: inspector,
+                inspection_date: document.getElementById('inspectionDate')?.value || "غير محدد",
+                location: document.getElementById('location')?.value || "غير محدد",
+                gps_coords: document.getElementById('gpsCoords')?.value || "غير محدد",
+                serial_no: document.getElementById('serialNo')?.value || "غير محدد",
+                contractor: document.getElementById('maintenanceContractor')?.value || "غير محدد",
+                report_details: reportDetails
+            };
+
+            // الإرسال الفعلي
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+            
+            alert("✅ تم إرسال التقرير بنجاح إلى إيميل الوحدة (tawria911@gmail.com)!");
+
+        } catch (error) {
+            console.error("خطأ في الإرسال:", error);
+            alert("❌ حدث خطأ أثناء الإرسال: " + (error.text || JSON.stringify(error)));
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
             }
-        });
-
-        if (!reportDetails) {
-            reportDetails = "تم إرسال التقرير الميداني بنجاح.";
-        }
-
-        // 3. إعداد البيانات الممررة لـ EmailJS
-        const templateParams = {
-            facility_name: facName,
-            inspector_name: inspector,
-            inspection_date: document.getElementById('inspectionDate')?.value || "غير محدد",
-            location: document.getElementById('location')?.value || "غير محدد",
-            gps_coords: document.getElementById('gpsCoords')?.value || "غير محدد",
-            serial_no: document.getElementById('serialNo')?.value || "غير محدد",
-            contractor: document.getElementById('maintenanceContractor')?.value || "غير محدد",
-            report_details: reportDetails
-        };
-
-        // 4. الإرسال
-        await emailjs.send("service_w1kg7u8", "template_k0n0gd8", templateParams);
-        
-        alert("✅ تم إرسال التقرير بنجاح إلى إيميل الوحدة!");
-
-    } catch (error) {
-        console.error("خطأ في الإرسال:", error);
-        alert("❌ حدث خطأ أثناء الإرسال: " + (error.text || JSON.stringify(error)));
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = originalHTML;
         }
     }
-}
+</script>
+
+</body>
+</html>
