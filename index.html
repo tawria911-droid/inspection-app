@@ -6,7 +6,7 @@
     <title>وزارة الشؤون الإسلامية - استمارة الكشف الميداني (14 بنداً رسمياً كاملاً)</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -28,32 +28,35 @@
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             box-sizing: border-box !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         body { 
-            font-family: 'Cairo', sans-serif; 
-            background-color: #f1f5f9; 
-            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%20047857' fill-opacity='0.035'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h40v40H40V0zM0 40h40v40H0V40zm20 20d0 0 1 0 0zm0-40d0 0 1 0 0z'/%3E%3Cpath d='M40 0l20 20-20 20L20 20 40 0zm0 40l20 20-20 20-20-20 20-20z'/%3E%3C/g%3E%3C/svg%3E");
-            color: #0f172a; 
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif; 
+            background-color: #f8fafc; 
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%20047857' fill-opacity='0.03'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h40v40H40V0zM0 40h40v40H0V40zm20 20d0 0 1 0 0zm0-40d0 0 1 0 0z'/%3E%3Cpath d='M40 0l20 20-20 20L20 20 40 0zm0 40l20 20-20 20-20-20 20-20z'/%3E%3C/g%3E%3C/svg%3E");
+            color: #0f172a;
+            line-height: 1.6;
         }
 
         .bg-header-gradient {
-            background: linear-gradient(135deg, #091e17 0%, #0f172a 60%, #064e3b 100%);
-            background-image: radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
-                              url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2010b981' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+            background: linear-gradient(135deg, #062c22 0%, #0f172a 65%, #044e3b 100%);
+            background-image: radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.18) 0%, transparent 45%),
+                              url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2010b981' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
         }
 
         .bg-card-header {
-            background: linear-gradient(90deg, #0f172a 0%, #064e3b 100%);
+            background: linear-gradient(90deg, #0b1d17 0%, #064e3b 100%);
         }
 
         .font-signature { font-family: 'Amiri', serif; }
         
         .custom-card {
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
         }
 
         .item-avoid-break {
@@ -148,29 +151,32 @@
 
         @media print {
             .no-print { display: none !important; }
-            body { background: white !important; background-image: none !important; font-size: 8.5pt; }
+            body { background: white !important; background-image: none !important; font-size: 9pt; }
             .custom-card { border: 1px solid #cbd5e1 !important; box-shadow: none !important; background: white !important; }
             .item-avoid-break { page-break-inside: avoid !important; break-inside: avoid !important; }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col font-sans">
 
-    <!-- Header العلوي -->
+    <!-- Header العلوي الرئيسي -->
     <header class="bg-header-gradient text-white shadow-2xl border-b-4 border-emerald-500 relative overflow-hidden no-print">
-        <div class="max-w-7xl mx-auto px-4 py-5 flex flex-wrap justify-between items-center gap-4 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 py-4 md:py-5 flex flex-wrap justify-between items-center gap-4 relative z-10">
+            <!-- الشعار مع اسم الوزارة -->
             <div class="flex items-center space-x-4 space-x-reverse">
-                <div class="bg-gradient-to-br from-emerald-500 to-emerald-700 p-3.5 rounded-2xl flex items-center justify-center text-3xl shadow-lg border border-emerald-400/30">
-                    <i class="fa-solid fa-kaaba text-white"></i>
+                <div class="bg-white/95 p-1.5 md:p-2 rounded-2xl flex items-center justify-center shadow-lg border border-emerald-400/40 shrink-0">
+                    <img src="input_file_0.png" alt="شعار وزارة الشؤون الإسلامية" class="h-14 md:h-16 w-auto object-contain">
                 </div>
                 <div>
-                    <h1 class="text-xl md:text-2xl font-black tracking-wide text-emerald-400 drop-shadow-sm">وزارة الشؤون الإسلامية والدعوة والإرشاد</h1>
-                    <p class="text-xs md:text-sm text-slate-200 font-bold mt-0.5">فرع منطقة مكة المكرمة - وحدة الطوارئ والأزمات والكوارث</p>
+                    <h1 class="text-lg md:text-2xl font-black tracking-normal text-emerald-400 drop-shadow-sm leading-tight">وزارة الشؤون الإسلامية والدعوة والإرشاد</h1>
+                    <p class="text-xs md:text-sm text-slate-200 font-bold mt-1 tracking-wide">فرع منطقة مكة المكرمة - وحدة الطوارئ والأزمات والكوارث</p>
                 </div>
             </div>
-            <div class="text-left bg-slate-900/80 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-emerald-500/30 shadow-inner">
-                <span class="text-[11px] text-slate-400 block font-semibold">استقبال التقارير الإلكترونية:</span>
-                <span class="text-sm font-extrabold text-emerald-400 tracking-wide">tawria911@gmail.com</span>
+
+            <!-- معلومات الاتصال بالأزمات -->
+            <div class="text-left bg-slate-900/90 backdrop-blur-md px-4 md:px-5 py-2.5 rounded-2xl border border-emerald-500/30 shadow-inner">
+                <span class="text-[11px] text-slate-300 block font-semibold tracking-wide">استقبال التقارير الإلكترونية:</span>
+                <span class="text-xs md:text-sm font-extrabold text-emerald-400 tracking-wider dir-ltr">tawria911@gmail.com</span>
             </div>
         </div>
     </header>
@@ -178,14 +184,14 @@
     <!-- شريط التنقل بين الاستمارات -->
     <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
-            <button onclick="switchTab('mosques')" id="tab-mosques" class="tab-btn border-b-4 border-emerald-600 text-emerald-700 font-extrabold py-4 px-6 text-sm md:text-base flex items-center gap-2.5 whitespace-nowrap transition-all">
-                <i class="fa-solid fa-mosque text-lg"></i> (1) المساجد والجوامع ومرافقها (14 بنداً رسمياً)
+            <button onclick="switchTab('mosques')" id="tab-mosques" class="tab-btn border-b-4 border-emerald-600 text-emerald-800 font-extrabold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-mosque text-base"></i> (1) المساجد والجوامع ومرافقها (14 بنداً رسمياً)
             </button>
-            <button onclick="switchTab('admin')" id="tab-admin" class="tab-btn border-b-4 border-transparent text-slate-500 hover:text-slate-800 font-bold py-4 px-6 text-sm md:text-base flex items-center gap-2.5 whitespace-nowrap transition-all">
-                <i class="fa-solid fa-building-user text-lg"></i> (2) المباني الإدارية
+            <button onclick="switchTab('admin')" id="tab-admin" class="tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-building-user text-base"></i> (2) المباني الإدارية
             </button>
-            <button onclick="switchTab('warehouses')" id="tab-warehouses" class="tab-btn border-b-4 border-transparent text-slate-500 hover:text-slate-800 font-bold py-4 px-6 text-sm md:text-base flex items-center gap-2.5 whitespace-nowrap transition-all">
-                <i class="fa-solid fa-warehouse text-lg"></i> (3) المستودعات ومرافق التخزين
+            <button onclick="switchTab('warehouses')" id="tab-warehouses" class="tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-warehouse text-base"></i> (3) المستودعات ومرافق التخزين
             </button>
         </div>
     </nav>
@@ -194,56 +200,70 @@
     <main class="flex-grow max-w-7xl w-full mx-auto p-3 md:p-6">
         <form id="inspectionForm" onsubmit="event.preventDefault();">
             
-            <!-- هيدر التقرير الرسمي -->
+            <!-- هيدر التقرير الرسمي المخصص للطباعة والـ PDF -->
             <div class="custom-card p-5 md:p-7 rounded-3xl mb-6 item-avoid-break relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-2 h-full bg-emerald-600"></div>
+                <div class="absolute top-0 right-0 w-2.5 h-full bg-emerald-600"></div>
                 
-                <div class="flex justify-between items-center border-b-2 border-emerald-600/30 pb-4 mb-5">
-                    <div class="text-right">
-                        <h2 class="text-base md:text-lg font-black text-emerald-900">وزارة الشؤون الإسلامية والدعوة والإرشاد</h2>
-                        <h3 class="text-xs md:text-sm font-bold text-slate-700 mt-0.5">فرع منطقة مكة المكرمة</h3>
-                        <p class="text-[11px] md:text-xs font-bold text-emerald-700 mt-0.5">وحدة الطوارئ والأزمات والكوارث</p>
+                <div class="flex justify-between items-center border-b-2 border-slate-200 pb-5 mb-5 gap-4">
+                    <!-- الجهة مع الشعار -->
+                    <div class="flex items-center gap-3.5 text-right">
+                        <img src="input_file_0.png" alt="شعار الوزارة" class="h-14 md:h-20 w-auto object-contain shrink-0">
+                        <div>
+                            <h2 class="text-sm md:text-lg font-black text-emerald-950 leading-tight">وزارة الشؤون الإسلامية والدعوة والإرشاد</h2>
+                            <h3 class="text-xs md:text-sm font-extrabold text-slate-700 mt-0.5">فرع منطقة مكة المكرمة</h3>
+                            <p class="text-[11px] md:text-xs font-bold text-emerald-700 mt-0.5">وحدة الطوارئ والأزمات والكوارث</p>
+                        </div>
                     </div>
-                    <div class="text-center">
-                        <span class="bg-slate-900 text-emerald-400 text-[10px] md:text-xs font-bold px-3.5 py-1 rounded-full inline-block mb-1.5 shadow-sm border border-emerald-500/20">تقرير ميداني رسمي كامل</span>
-                        <h2 class="text-xs md:text-base font-black text-slate-900" id="sectionTitle">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها (14 بنداً رسمياً)</h2>
+
+                    <!-- العنوان المركزي -->
+                    <div class="text-center flex-1 hidden sm:block">
+                        <span class="bg-slate-900 text-emerald-400 text-[10px] md:text-xs font-extrabold px-3.5 py-1 rounded-full inline-block mb-1.5 shadow-sm border border-emerald-500/20">تقرير ميداني رسمي معتمد</span>
+                        <h2 class="text-xs md:text-base font-black text-slate-900 leading-snug" id="sectionTitle">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها (14 بنداً رسمياً)</h2>
                     </div>
-                    <div class="text-left text-[10px] md:text-xs text-slate-600">
-                        <p class="font-extrabold text-slate-800">رؤية المملكة 2030</p>
-                        <p class="text-emerald-700 font-bold">السلامة والوقاية أولاً</p>
+
+                    <!-- رؤية 2030 -->
+                    <div class="text-left text-[10px] md:text-xs text-slate-600 shrink-0">
+                        <p class="font-black text-slate-900 text-xs md:text-sm">رؤية المملكة 2030</p>
+                        <p class="text-emerald-700 font-extrabold mt-0.5">السلامة والوقاية أولاً</p>
                     </div>
                 </div>
 
+                <!-- العنوان التكيفي للشاشات الصغيرة -->
+                <div class="block sm:hidden text-center mb-4 pb-3 border-b border-slate-100">
+                    <span class="bg-slate-900 text-emerald-400 text-[10px] font-bold px-3 py-0.5 rounded-full inline-block mb-1">تقرير ميداني رسمي</span>
+                    <h2 class="text-xs font-black text-slate-900" id="sectionTitleMobile">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها</h2>
+                </div>
+
                 <!-- البيانات العامة -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 bg-slate-50/80 p-4 rounded-2xl border border-slate-200/80">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 bg-slate-50/90 p-4 rounded-2xl border border-slate-200/90">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1" id="lblFacilityName">اسم المسجد / الجامع <span class="text-red-500">*</span></label>
-                        <input type="text" id="facilityName" required placeholder="أدخل اسم الموقع..." class="w-full text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-bold text-slate-800 shadow-sm transition">
+                        <label class="block text-xs font-extrabold text-slate-700 mb-1.5" id="lblFacilityName">اسم المسجد / الجامع <span class="text-red-600">*</span></label>
+                        <input type="text" id="facilityName" required placeholder="أدخل اسم الموقع كامل..." class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-bold text-slate-900 shadow-sm transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">الرقم التسلسلي</label>
-                        <input type="text" id="serialNo" placeholder="SQ-2026-001" dir="ltr" class="w-full text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-right font-mono shadow-sm transition">
+                        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">الرقم التسلسلي</label>
+                        <input type="text" id="serialNo" placeholder="SQ-2026-001" dir="ltr" class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-right font-mono font-semibold text-slate-800 shadow-sm transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">تاريخ الجولة التفتيشية (هجري)</label>
-                        <input type="text" id="inspectionDate" placeholder="21 / 03 / 1448 هـ" dir="rtl" class="w-full text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-bold text-emerald-900 text-right shadow-sm transition">
+                        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">تاريخ الجولة التفتيشية (هجري)</label>
+                        <input type="text" id="inspectionDate" placeholder="21 / 03 / 1448 هـ" dir="rtl" class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-extrabold text-emerald-900 text-right shadow-sm transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1" id="lblLocation">موقع المسجد / الجامع</label>
-                        <input type="text" id="location" placeholder="الحي / المدينة..." class="w-full text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none shadow-sm transition">
+                        <label class="block text-xs font-extrabold text-slate-700 mb-1.5" id="lblLocation">موقع المسجد / الجامع</label>
+                        <input type="text" id="location" placeholder="الحي / المدينة..." class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-semibold text-slate-800 shadow-sm transition">
                     </div>
                     <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <label class="block text-xs font-bold text-slate-700">الإحداثيات (GPS)</label>
-                            <button type="button" onclick="getGPSLocation()" class="text-[11px] bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-0.5 rounded-md font-bold no-print flex items-center gap-1 shadow-sm transition active:scale-95">
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="block text-xs font-extrabold text-slate-700">الإحداثيات (GPS)</label>
+                            <button type="button" onclick="getGPSLocation()" class="text-[11px] bg-emerald-700 hover:bg-emerald-800 text-white px-2.5 py-0.5 rounded-md font-extrabold no-print flex items-center gap-1 shadow-sm transition active:scale-95">
                                 <i class="fa-solid fa-location-crosshairs"></i> جلب
                             </button>
                         </div>
-                        <input type="text" id="gpsCoords" placeholder="21.4225, 39.8262" dir="ltr" class="w-full text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-mono text-right shadow-sm transition">
+                        <input type="text" id="gpsCoords" placeholder="21.4225, 39.8262" dir="ltr" class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-mono text-right font-semibold text-slate-800 shadow-sm transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">متعهد الصيانة / الشركة المشغلة</label>
-                        <input type="text" id="maintenanceContractor" placeholder="اسم الشركة المشغلة..." class="w-full text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none shadow-sm transition">
+                        <label class="block text-xs font-extrabold text-slate-700 mb-1.5">متعهد الصيانة / الشركة المشغلة</label>
+                        <input type="text" id="maintenanceContractor" placeholder="اسم الشركة المشغلة..." class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-semibold text-slate-800 shadow-sm transition">
                     </div>
                 </div>
             </div>
@@ -253,47 +273,47 @@
 
             <!-- التوقيع والاعتماد الرسميون -->
             <div class="custom-card p-5 md:p-7 rounded-3xl mt-6 item-avoid-break">
-                <h3 class="text-base font-black text-slate-900 border-b border-slate-200 pb-3.5 mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-file-signature text-emerald-600 text-lg"></i> التوقيعات والاعتماد الرسمي للتقرير
+                <h3 class="text-sm md:text-base font-black text-slate-900 border-b border-slate-200 pb-3.5 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-file-signature text-emerald-700 text-lg"></i> التوقيعات والاعتماد الرسمي للتقرير
                 </h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- توقيع معد التقرير -->
-                    <div class="border border-slate-200/90 p-5 rounded-2xl bg-slate-50/50 flex flex-col justify-between shadow-inner">
+                    <div class="border border-slate-200/90 p-5 rounded-2xl bg-slate-50/60 flex flex-col justify-between shadow-inner">
                         <div>
-                            <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
-                                <span class="bg-emerald-600 text-white text-xs font-black px-3 py-1 rounded-lg">أولاً</span>
-                                <h4 class="font-bold text-slate-800 text-sm">مُعِد التقرير / أعضاء اللجنة الميدانية</h4>
+                            <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2.5">
+                                <span class="bg-emerald-700 text-white text-xs font-black px-3 py-0.5 rounded-lg">أولاً</span>
+                                <h4 class="font-extrabold text-slate-800 text-xs md:text-sm">مُعِد التقرير / أعضاء اللجنة الميدانية</h4>
                             </div>
                             <div class="mb-3">
-                                <label class="block text-xs font-bold text-slate-700 mb-1">اسم معد التقرير <span class="text-red-500">*</span></label>
-                                <input type="text" id="inspectorName" required placeholder="أدخل اسم معد التقرير..." class="w-full text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold shadow-sm">
+                                <label class="block text-xs font-extrabold text-slate-700 mb-1.5">اسم معد التقرير <span class="text-red-600">*</span></label>
+                                <input type="text" id="inspectorName" required placeholder="أدخل اسم معد التقرير الثلاثي..." class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-900 shadow-sm">
                             </div>
                         </div>
 
                         <div class="pt-3 border-t border-slate-200">
-                            <label class="block text-xs font-bold text-slate-700 mb-1">توقيع معد التقرير:</label>
-                            <textarea id="inspectorSignatureText" rows="3" class="w-full p-2.5 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-signature font-bold text-slate-800 resize-none shadow-sm"></textarea>
+                            <label class="block text-xs font-extrabold text-slate-700 mb-1.5">توقيع معد التقرير:</label>
+                            <textarea id="inspectorSignatureText" rows="3" class="w-full p-2.5 text-xs md:text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-signature font-bold text-slate-900 resize-none shadow-sm"></textarea>
                         </div>
                     </div>
 
                     <!-- توقيع المعتمد الرسمي -->
-                    <div class="border border-slate-200/90 p-5 rounded-2xl bg-slate-50/50 flex flex-col justify-between shadow-inner">
+                    <div class="border border-slate-200/90 p-5 rounded-2xl bg-slate-50/60 flex flex-col justify-between shadow-inner">
                         <div>
-                            <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2">
-                                <span class="bg-slate-900 text-white text-xs font-black px-3 py-1 rounded-lg">ثانياً</span>
-                                <h4 class="font-bold text-slate-800 text-sm">مدير وحدة الأزمات والطوارئ والكوارث</h4>
+                            <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2.5">
+                                <span class="bg-slate-900 text-white text-xs font-black px-3 py-0.5 rounded-lg">ثانياً</span>
+                                <h4 class="font-extrabold text-slate-800 text-xs md:text-sm">مدير وحدة الأزمات والطوارئ والكوارث</h4>
                             </div>
 
-                            <div class="bg-white p-3 rounded-xl border border-slate-200 text-center space-y-1 mb-3 shadow-sm">
-                                <p class="text-xs text-slate-500 font-semibold">يعتمد مدير وحدة الطوارئ والأزمات والكوارث بالفرع:</p>
-                                <p class="text-base font-black text-slate-900">م. ناصر بن عبدالرحمن السكتاوي</p>
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-center space-y-1 mb-3 shadow-sm">
+                                <p class="text-xs text-slate-600 font-bold">يعتمد مدير وحدة الطوارئ والأزمات والكوارث بالفرع:</p>
+                                <p class="text-sm md:text-base font-black text-slate-950">م. ناصر بن عبدالرحمن السكتاوي</p>
                             </div>
                         </div>
 
                         <div class="pt-2 border-t border-slate-200">
-                            <label class="block text-xs font-bold text-slate-700 mb-1">توقيع المعتمد الرسمي:</label>
-                            <textarea id="managerSignatureText" rows="3" class="w-full p-2.5 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-signature font-bold text-slate-800 resize-none shadow-sm"></textarea>
+                            <label class="block text-xs font-extrabold text-slate-700 mb-1.5">توقيع المعتمد الرسمي:</label>
+                            <textarea id="managerSignatureText" rows="3" class="w-full p-2.5 text-xs md:text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-signature font-bold text-slate-900 resize-none shadow-sm"></textarea>
                         </div>
                     </div>
                 </div>
@@ -301,18 +321,18 @@
 
             <!-- أزرار العمليات -->
             <div class="no-print mt-8 flex flex-wrap gap-4 justify-end">
-                <button type="button" onclick="printReport()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-7 rounded-2xl shadow-lg transition flex items-center gap-2.5 active:scale-95">
-                    <i class="fa-solid fa-print text-emerald-400"></i> طباعة وحفظ PDF
+                <button type="button" onclick="printReport()" class="bg-slate-800 hover:bg-slate-900 text-white font-extrabold py-3.5 px-7 rounded-2xl shadow-lg transition flex items-center gap-2.5 active:scale-95 text-xs md:text-sm">
+                    <i class="fa-solid fa-print text-emerald-400 text-base"></i> طباعة وحفظ PDF
                 </button>
-                <button type="button" id="sendEmailBtn" onclick="sendPDFViaEmail(event)" class="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-extrabold py-3.5 px-9 rounded-2xl shadow-xl transition flex items-center gap-2.5 text-lg active:scale-95 border border-emerald-500/30">
-                    <i class="fa-solid fa-paper-plane"></i> إرسال إلى إيميل الوحدة
+                <button type="button" id="sendEmailBtn" onclick="sendPDFViaEmail(event)" class="bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-700 hover:to-emerald-900 text-white font-black py-3.5 px-8 rounded-2xl shadow-xl transition flex items-center gap-2.5 text-sm md:text-base active:scale-95 border border-emerald-500/30">
+                    <i class="fa-solid fa-paper-plane text-base"></i> إرسال إلى إيميل الوحدة
                 </button>
             </div>
 
         </form>
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-4 text-center text-xs mt-auto no-print border-t border-slate-800">
+    <footer class="bg-slate-900 text-slate-400 py-4 text-center text-xs font-bold mt-auto no-print border-t border-slate-800">
         وزارة الشؤون الإسلامية والدعوة والإرشاد - فرع منطقة مكة المكرمة © 2026
     </footer>
 
@@ -595,9 +615,9 @@
                 catCard.className = 'custom-card rounded-3xl overflow-hidden mb-6 item-avoid-break';
                 
                 let html = `
-                <div class="bg-card-header text-white px-5 md:px-6 py-3.5 font-black text-sm md:text-base flex justify-between items-center header-avoid-break border-b border-emerald-500/20">
+                <div class="bg-card-header text-white px-5 md:px-6 py-3.5 font-black text-xs md:text-sm flex justify-between items-center header-avoid-break border-b border-emerald-500/20">
                     <span class="flex items-center gap-2.5"><i class="fa-solid fa-shield-halved text-emerald-400"></i> ${cat.title}</span>
-                    <span class="bg-emerald-600/90 text-white text-xs px-3 py-1 rounded-full font-bold border border-emerald-400/20">${cat.items.length} فقرات</span>
+                    <span class="bg-emerald-600/90 text-white text-[11px] px-3 py-0.5 rounded-full font-bold border border-emerald-400/20">${cat.items.length} فقرات</span>
                 </div>
                 <div class="p-4 md:p-6 divide-y divide-slate-100">`;
 
@@ -606,32 +626,32 @@
                     html += `
                     <div class="py-3.5 item-avoid-break">
                         <div class="flex items-start gap-3 mb-2.5">
-                            <span class="bg-slate-900 text-emerald-400 font-extrabold text-xs px-2.5 py-1 rounded-lg shrink-0 mt-0.5 shadow-sm">
+                            <span class="bg-slate-900 text-emerald-400 font-black text-xs px-2.5 py-1 rounded-lg shrink-0 mt-0.5 shadow-sm">
                                 ${iIdx + 1}
                             </span>
-                            <p class="font-bold text-slate-800 text-sm md:text-base leading-relaxed flex-grow">
+                            <p class="font-bold text-slate-900 text-xs md:text-sm leading-relaxed flex-grow">
                                 ${item}
                             </p>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center pr-0 md:pr-9">
-                            <div class="md:col-span-6 grid grid-cols-3 gap-2 font-bold text-xs">
-                                <label class="cursor-pointer border-2 border-emerald-400/50 bg-emerald-50/60 text-emerald-900 hover:bg-emerald-100 rounded-xl p-2 md:p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
+                            <div class="md:col-span-6 grid grid-cols-3 gap-2 font-black text-xs">
+                                <label class="cursor-pointer border-2 border-emerald-400/60 bg-emerald-50/70 text-emerald-950 hover:bg-emerald-100 rounded-xl p-2 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
                                     <input type="radio" name="${radioName}" value="yes" checked class="accent-emerald-600 w-4 h-4">
                                     <span>نعم</span>
                                 </label>
-                                <label class="cursor-pointer border-2 border-red-300 bg-red-50/60 text-red-900 hover:bg-red-100 rounded-xl p-2 md:p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
+                                <label class="cursor-pointer border-2 border-red-300 bg-red-50/70 text-red-950 hover:bg-red-100 rounded-xl p-2 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
                                     <input type="radio" name="${radioName}" value="no" class="accent-red-600 w-4 h-4">
                                     <span>لا</span>
                                 </label>
-                                <label class="cursor-pointer border-2 border-slate-300 bg-slate-100/60 text-slate-700 hover:bg-slate-200 rounded-xl p-2 md:p-2.5 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
+                                <label class="cursor-pointer border-2 border-slate-300 bg-slate-100/70 text-slate-800 hover:bg-slate-200 rounded-xl p-2 flex items-center justify-center gap-1.5 transition text-center active:scale-95 shadow-sm">
                                     <input type="radio" name="${radioName}" value="na" class="accent-slate-600 w-4 h-4">
                                     <span>لا ينطبق</span>
                                 </label>
                             </div>
 
                             <div class="md:col-span-6">
-                                <input type="text" placeholder="إضافة ملاحظة تفصيلية..." class="w-full p-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-emerald-500 transition shadow-inner">
+                                <input type="text" placeholder="إضافة ملاحظة تفصيلية..." class="w-full p-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl outline-none focus:bg-white focus:border-emerald-500 font-semibold text-slate-800 transition shadow-inner">
                             </div>
                         </div>
                     </div>`;
@@ -645,30 +665,37 @@
 
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('border-emerald-600', 'text-emerald-700');
-                btn.classList.add('border-transparent', 'text-slate-500');
+                btn.classList.remove('border-emerald-600', 'text-emerald-800');
+                btn.classList.add('border-transparent', 'text-slate-600');
             });
 
             const activeBtn = document.getElementById(`tab-${tab}`);
-            activeBtn.classList.add('border-emerald-600', 'text-emerald-700');
+            activeBtn.classList.add('border-emerald-600', 'text-emerald-800');
 
             const titleElem = document.getElementById('sectionTitle');
+            const titleMobile = document.getElementById('sectionTitleMobile');
             const lblFacilityName = document.getElementById('lblFacilityName');
             const lblLocation = document.getElementById('lblLocation');
 
             if(tab === 'mosques') {
-                titleElem.innerText = "استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها (14 بنداً رسمياً كاملة)";
-                lblFacilityName.innerHTML = `اسم المسجد / الجامع <span class="text-red-500">*</span>`;
+                const text = "استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها (14 بنداً رسمياً كاملة)";
+                titleElem.innerText = text;
+                if(titleMobile) titleMobile.innerText = text;
+                lblFacilityName.innerHTML = `اسم المسجد / الجامع <span class="text-red-600">*</span>`;
                 lblLocation.innerText = "موقع المسجد / الجامع";
                 renderChecklist(mosquesChecklist);
             } else if(tab === 'admin') {
-                titleElem.innerText = "استمارة الكشف الميداني على المباني الإدارية وتجهيزات السلامة";
-                lblFacilityName.innerHTML = `اسم المنشأة / المبنى الإداري <span class="text-red-500">*</span>`;
+                const text = "استمارة الكشف الميداني على المباني الإدارية وتجهيزات السلامة";
+                titleElem.innerText = text;
+                if(titleMobile) titleMobile.innerText = text;
+                lblFacilityName.innerHTML = `اسم المنشأة / المبنى الإداري <span class="text-red-600">*</span>`;
                 lblLocation.innerText = "الموقع / الحي";
                 renderChecklist(adminChecklist);
             } else {
-                titleElem.innerText = "استمارة الكشف الميداني على المستودعات ومرافق التخزين";
-                lblFacilityName.innerHTML = `اسم المستودع / المرفق <span class="text-red-500">*</span>`;
+                const text = "استمارة الكشف الميداني على المستودعات ومرافق التخزين";
+                titleElem.innerText = text;
+                if(titleMobile) titleMobile.innerText = text;
+                lblFacilityName.innerHTML = `اسم المستودع / المرفق <span class="text-red-600">*</span>`;
                 lblLocation.innerText = "الموقع / الحي";
                 renderChecklist(warehouseChecklist);
             }
