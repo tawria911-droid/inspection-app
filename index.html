@@ -12,7 +12,700 @@
     <!-- مكتبة EmailJS -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
+    <style><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وزارة الشؤون الإسلامية - استمارة الكشف الميداني</title>
+
+    <!-- استيراد خط تجول Tajawal من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS & FontAwesome Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- مكتبات تحويل الصفحة لـ PDF وإرسال الإيميل تلقائياً -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
     <style>
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            box-sizing: border-box !important;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            background-color: #f8fafc; 
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%20047857' fill-opacity='0.03'%3E%3Cpath d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h40v40H40V0zM0 40h40v40H0V40zm20 20d0 0 1 0 0zm0-40d0 0 1 0 0z'/%3E%3Cpath d='M40 0l20 20-20 20L20 20 40 0zm0 40l20 20-20 20-20-20 20-20z'/%3E%3C/g%3E%3C/svg%3E");
+            color: #0f172a;
+            line-height: 1.5;
+        }
+
+        .bg-header-gradient {
+            background: linear-gradient(135deg, #062c22 0%, #0f172a 65%, #044e3b 100%);
+            background-image: radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.18) 0%, transparent 45%),
+                              url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2010b981' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .bg-card-header {
+            background: linear-gradient(90deg, #0b1d17 0%, #064e3b 100%);
+        }
+
+        .font-signature { 
+            font-family: 'Times New Roman', serif; 
+            font-style: italic;
+        }
+        
+        .custom-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        }
+
+        .item-avoid-break {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            -webkit-column-break-inside: avoid !important;
+        }
+
+        .header-avoid-break {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+        }
+
+        body.pdf-export {
+            background: #ffffff !important;
+            background-image: none !important;
+            width: 790px !important;
+            min-width: 790px !important;
+            max-width: 790px !important;
+            margin: 0 auto !important;
+            padding: 15px !important;
+            direction: rtl !important;
+        }
+        
+        body.pdf-export .no-print {
+            display: none !important;
+        }
+        
+        body.pdf-export main, 
+        body.pdf-export #inspectionForm {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        body.pdf-export .custom-card {
+            background: #ffffff !important;
+            box-shadow: none !important;
+            border: 1px solid #cbd5e1 !important;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; background-image: none !important; font-size: 9pt; }
+            .custom-card { border: 1px solid #cbd5e1 !important; box-shadow: none !important; background: white !important; }
+            .item-avoid-break { page-break-inside: avoid !important; break-inside: avoid !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header العلوي الرئيسي -->
+    <header class="bg-header-gradient text-white shadow-2xl border-b-4 border-emerald-500 relative overflow-hidden no-print">
+        <div class="max-w-7xl mx-auto px-4 py-4 md:py-5 flex flex-wrap justify-between items-center gap-4 relative z-10">
+            <!-- الشعار مع اسم الوزارة -->
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <div class="bg-white p-1.5 md:p-2 rounded-2xl flex items-center justify-center shadow-lg border border-emerald-400/40 shrink-0 min-w-[60px] min-h-[60px]">
+                    <img src="100.jpg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/047857/ffffff?text=الوزارة';" alt="شعار وزارة الشؤون الإسلامية" class="h-14 md:h-16 w-auto object-contain">
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-2xl font-bold tracking-normal text-emerald-400 drop-shadow-sm leading-tight">وزارة الشؤون الإسلامية والدعوة والإرشاد</h1>
+                    <p class="text-xs md:text-sm text-slate-200 font-bold mt-1 tracking-wide">فرع منطقة مكة المكرمة - وحدة الطوارئ والأزمات والكوارث</p>
+                </div>
+            </div>
+
+            <!-- معلومات الاتصال بالأزمات -->
+            <div class="text-left bg-slate-900/90 backdrop-blur-md px-4 md:px-5 py-2.5 rounded-2xl border border-emerald-500/30 shadow-inner">
+                <span class="text-[11px] text-slate-300 block font-semibold tracking-wide">استقبال التقارير الإلكترونية:</span>
+                <span class="text-xs md:text-sm font-bold text-emerald-400 tracking-wider dir-ltr">tawria911@gmail.com</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- شريط التنقل بين الاستمارات -->
+    <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
+            <button type="button" onclick="switchTab('mosques')" id="tab-mosques" class="tab-btn border-b-4 border-emerald-600 text-emerald-800 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-mosque text-base"></i> (1) المساجد والجوامع ومرافقها
+            </button>
+            <button type="button" onclick="switchTab('admin')" id="tab-admin" class="tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-building-user text-base"></i> (2) المباني الإدارية
+            </button>
+            <button type="button" onclick="switchTab('warehouses')" id="tab-warehouses" class="tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+                <i class="fa-solid fa-warehouse text-base"></i> (3) المستودعات ومرافق التخزين
+            </button>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-3 md:p-6">
+        <form id="inspectionForm" onsubmit="event.preventDefault();">
+            
+            <!-- هيدر التقرير الرسمي المخصص للطباعة والـ PDF -->
+            <div class="custom-card p-5 md:p-7 rounded-3xl mb-6 item-avoid-break relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-2.5 h-full bg-emerald-600"></div>
+                
+                <div class="flex justify-between items-center border-b-2 border-slate-200 pb-5 mb-5 gap-4">
+                    <!-- الجهة مع الشعار -->
+                    <div class="flex items-center gap-3.5 text-right">
+                        <img src="100.jpg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/047857/ffffff?text=الوزارة';" alt="شعار الوزارة" class="h-14 md:h-20 w-auto object-contain shrink-0">
+                        <div>
+                            <h2 class="text-sm md:text-lg font-bold text-emerald-950 leading-tight">وزارة الشؤون الإسلامية والدعوة والإرشاد</h2>
+                            <h3 class="text-xs md:text-sm font-bold text-slate-700 mt-0.5">فرع منطقة مكة المكرمة</h3>
+                            <p class="text-[11px] md:text-xs font-bold text-emerald-700 mt-0.5">وحدة الطوارئ والأزمات والكوارث</p>
+                        </div>
+                    </div>
+
+                    <!-- العنوان المركزي -->
+                    <div class="text-center flex-1 hidden sm:block">
+                        <span class="bg-slate-900 text-emerald-400 text-[10px] md:text-xs font-bold px-3.5 py-1 rounded-full inline-block mb-1.5 shadow-sm border border-emerald-500/20">تقرير ميداني رسمي معتمد</span>
+                        <h2 class="text-xs md:text-base font-bold text-slate-900 leading-snug" id="sectionTitle">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها</h2>
+                    </div>
+
+                    <!-- رؤية 2030 -->
+                    <div class="text-left text-[10px] md:text-xs text-slate-600 shrink-0">
+                        <p class="font-bold text-slate-900 text-xs md:text-sm">رؤية المملكة 2030</p>
+                        <p class="text-emerald-700 font-bold mt-0.5">السلامة والوقاية أولاً</p>
+                    </div>
+                </div>
+
+                <!-- العنوان التكيفي للشاشات الصغيرة -->
+                <div class="block sm:hidden text-center mb-4 pb-3 border-b border-slate-100">
+                    <span class="bg-slate-900 text-emerald-400 text-[10px] font-bold px-3 py-0.5 rounded-full inline-block mb-1">تقرير ميداني رسمي</span>
+                    <h2 class="text-xs font-bold text-slate-900" id="sectionTitleMobile">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها</h2>
+                </div>
+
+                <!-- البيانات العامة -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 bg-slate-50/90 p-4 rounded-2xl border border-slate-200/90">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" id="lblFacilityName">اسم المسجد / الجامع <span class="text-red-600">*</span></label>
+                        <input type="text" id="facilityName" required placeholder="أدخل اسم الموقع كامل..." class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-bold text-slate-900 shadow-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">الرقم التسلسلي</label>
+                        <input type="text" id="serialNo" placeholder="SQ-2026-001" dir="ltr" class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-right font-mono font-semibold text-slate-800 shadow-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">تاريخ الجولة التفتيشية (هجري)</label>
+                        <input type="text" id="inspectionDate" placeholder="21 / 03 / 1448 هـ" dir="rtl" class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-bold text-emerald-900 text-right shadow-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" id="lblLocation">موقع المسجد / الجامع</label>
+                        <input type="text" id="location" placeholder="الحي / المدينة..." class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-semibold text-slate-800 shadow-sm transition">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="block text-xs font-bold text-slate-700">الإحداثيات (GPS)</label>
+                            <button type="button" onclick="getGPSLocation()" class="text-[11px] bg-emerald-700 hover:bg-emerald-800 text-white px-2.5 py-0.5 rounded-md font-bold no-print flex items-center gap-1 shadow-sm transition active:scale-95">
+                                <i class="fa-solid fa-location-crosshairs"></i> جلب
+                            </button>
+                        </div>
+                        <input type="text" id="gpsCoords" placeholder="21.4225, 39.8262" dir="ltr" class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-mono text-right font-semibold text-slate-800 shadow-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">متعهد الصيانة / الشركة المشغلة</label>
+                        <input type="text" id="maintenanceContractor" placeholder="اسم الشركة المشغلة..." class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none font-semibold text-slate-800 shadow-sm transition">
+                    </div>
+                </div>
+            </div>
+
+            <!-- حاوية البنود المفصلة -->
+            <div id="checklistContainer" class="space-y-6"></div>
+
+            <!-- التوقيع والاعتماد الرسميون -->
+            <div class="custom-card p-5 md:p-7 rounded-3xl mt-6 item-avoid-break">
+                <h3 class="text-sm md:text-base font-bold text-slate-900 border-b border-slate-200 pb-3.5 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-file-signature text-emerald-700 text-lg"></i> التوقيعات والاعتماد الرسمي للتقرير
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- توقيع معد التقرير -->
+                    <div class="border border-slate-200/90 p-5 rounded-2xl bg-slate-50/60 flex flex-col justify-between shadow-inner">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2.5">
+                                <span class="bg-emerald-700 text-white text-xs font-bold px-3 py-0.5 rounded-lg">أولاً</span>
+                                <h4 class="font-bold text-slate-800 text-xs md:text-sm">مُعِد التقرير / أعضاء اللجنة الميدانية</h4>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-xs font-bold text-slate-700 mb-1.5">اسم معد التقرير <span class="text-red-600">*</span></label>
+                                <input type="text" id="inspectorName" required placeholder="أدخل اسم معد التقرير الثلاثي..." class="w-full text-xs md:text-sm p-2.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-900 shadow-sm">
+                            </div>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-200">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">توقيع معد التقرير:</label>
+                            <textarea id="inspectorSignatureText" rows="2" placeholder="اكتب الاسم أو التوقيع هنا..." class="w-full p-2.5 text-xs md:text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-signature font-bold text-slate-900 resize-none shadow-sm"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- توقيع المعتمد الرسمي -->
+                    <div class="border border-slate-200/90 p-5 rounded-2xl bg-slate-50/60 flex flex-col justify-between shadow-inner">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2.5">
+                                <span class="bg-slate-900 text-white text-xs font-bold px-3 py-0.5 rounded-lg">ثانياً</span>
+                                <h4 class="font-bold text-slate-800 text-xs md:text-sm">مدير وحدة الأزمات والطوارئ والكوارث</h4>
+                            </div>
+
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 text-center space-y-1 mb-3 shadow-sm">
+                                <p class="text-xs text-slate-600 font-bold">يعتمد مدير وحدة الطوارئ والأزمات والكوارث بالفرع:</p>
+                                <p class="text-sm md:text-base font-bold text-slate-950">م. ناصر بن عبدالرحمن السكتاوي</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-200">
+                            <label class="block text-xs font-bold text-slate-700 mb-1.5">توقيع المعتمد الرسمي:</label>
+                            <textarea id="managerSignatureText" rows="2" placeholder="توقيع الاعتماد..." class="w-full p-2.5 text-xs md:text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none font-signature font-bold text-slate-900 resize-none shadow-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار العمليات -->
+            <div class="no-print mt-8 flex flex-wrap gap-4 justify-end">
+                <button type="button" onclick="printReport()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-7 rounded-2xl shadow-lg transition flex items-center gap-2.5 active:scale-95 text-xs md:text-sm">
+                    <i class="fa-solid fa-print text-emerald-400 text-base"></i> طباعة وحفظ PDF
+                </button>
+                <button type="button" id="sendEmailBtn" onclick="sendPDFViaEmail(event)" class="bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-700 hover:to-emerald-900 text-white font-bold py-3.5 px-8 rounded-2xl shadow-xl transition flex items-center gap-2.5 text-sm md:text-base active:scale-95 border border-emerald-500/30">
+                    <i class="fa-solid fa-paper-plane text-base"></i> إرسال إلى إيميل الوحدة
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-4 text-center text-xs font-bold mt-auto no-print border-t border-slate-800">
+        وزارة الشؤون الإسلامية والدعوة والإرشاد - فرع منطقة مكة المكرمة © 2026
+    </footer>
+
+    <script>
+        // =========================================================
+        // مفاتيح EmailJS الرسمية
+        // =========================================================
+        const EMAILJS_PUBLIC_KEY  = "p0em28uG45VkqRcrN"; 
+        const EMAILJS_SERVICE_ID  = "service_w1kg7u8";                 
+        const EMAILJS_TEMPLATE_ID = "template_k0n0gd8"; 
+
+        (function() {
+            if (typeof emailjs !== 'undefined') {
+                emailjs.init(EMAILJS_PUBLIC_KEY);
+            }
+        })();
+
+        function getFormattedHijriDate() {
+            try {
+                const today = new Date();
+                const formatter = new Intl.DateTimeFormat('en-GB-u-ca-islamic-umalqura', {
+                    day: '2-digit', month: '2-digit', year: 'numeric'
+                });
+                const parts = formatter.formatToParts(today);
+                const day = parts.find(p => p.type === 'day').value;
+                const month = parts.find(p => p.type === 'month').value;
+                const year = parts.find(p => p.type === 'year').value;
+                return `${day} / ${month} /${year} هـ`;
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function getGPSLocation() {
+            const gpsInput = document.getElementById('gpsCoords');
+            if (navigator.geolocation) {
+                gpsInput.placeholder = "جاري التحديد...";
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude.toFixed(6);
+                        const lng = position.coords.longitude.toFixed(6);
+                        gpsInput.value = `${lat}, ${lng}`;
+                    },
+                    (error) => {
+                        alert("⚠️ تعذر جلب الموقع تلقائياً.");
+                        gpsInput.placeholder = "أدخل الإحداثيات...";
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            }
+        }
+
+        // قائمة البنود الـ 14 الكاملة للمساجد والجوامع
+        const mosquesChecklist = [
+            {
+                title: "أولاً: الكشف على أنظمة الحريق والإنذارات",
+                items: [
+                    "توفر طفايات الحريق (بودرة / ثاني أكسيد الكربون) بعدد كافٍ وتوزيع مناسب في كافة أرجاء المسجد والممرات.",
+                    "سريان صلاحية بطاقة الفحص الدوري معلقة على طفايات الحريق وعدم انقضاء تاريخ المعايرة.",
+                    "جاهزية وسلاسل عمل كواشف الدخان والحرارة ولوحة التحكم الرئيسية وجرس/صافرة الإنذار والربط بالكهرباء والبطارية الاحتياطية.",
+                    "توفر مخارج طوارئ بعدد كافٍ وبأبواب تفتح للخارج وسهولة الفتح (ذراع الدفع Push Bar) وغير مغلقة بلسان أو سلاسل.",
+                    "وضوح لوحات مخارج الطوارئ المضيئة (EXIT) وتأكيد عملها التلقائي عند انقطاع التيار الكهربائي الرئيسي.",
+                    "توفر وخلو شبكات ومضخات الحريق وبكرات الخراطيم والمحابس من التلف وجاهزيتها للعمل الفوري عند الطوارئ."
+                ]
+            },
+            {
+                title: "ثانياً: السلامة الكهربائية",
+                items: [
+                    "إغلاق وإحكام لوحات التوزيع الكهربائية والقواطع ومنع الوصول إليها إلا للمختصين مع وضع لافتات تحذيرية.",
+                    "خلو جميع التمديدات والكابلات والتوصيلات الكهربائية من الأسلاك المكشوفة أو التمديدات العشوائية والمؤقتة.",
+                    "سلامة المفاتيح والأفياش الكهربائية ومآخذ التغذية وخلوها من أي آثار سخونة زائدة أو احتراق.",
+                    "توفر نظام التأريض الكهربائي العام المعتمد للمبنى والأجهزة الكهربائية الرئيسية.",
+                    "ملاءمة قدرة القواطع والتوصيلات للأحمال الكهربائية الفعلية (أجهزة التكييف، النظام الصوتي، الإضاءة).",
+                    "سلامة المولد الكهربائي الاحتياطي والمحولات وتوفر وقود كافٍ للتشغيل الفوري عند حدوث الطوارئ."
+                ]
+            },
+            {
+                title: "ثالثاً: السلامة الإنشائية",
+                items: [
+                    "خلو الأسقف والجدران والأعمدة والجسور من التشققات والتصدعات الشديدة أو الشروخ الهيكلية الخطرة.",
+                    "سلامة عزل الأسطح وخلوها من تسربات مياه الأمطار أو التجمعات المائية التي تؤثر على السلامة الإنشائية.",
+                    "متانة وسلامة الدرابزينات والحواجز الواقية على السلالم والأماكن المرتفعة ومصليات الدور الثاني.",
+                    "خلو المسجد وتوسعاته الملحقة من العوائق والإضافات الإنشائية الخشبية أو المعدنية غير المعتمدة.",
+                    "سلامة الواجهات الخارجية والرخام والنوافذ والأسوار الخارجية من خطر السقوط أو الانهيار."
+                ]
+            },
+            {
+                title: "رابعاً: الصحة المهنية والنظافة (دورات المياه، التكييف، مياه الشرب)",
+                items: [
+                    "نظافة وتطهير دورات المياه والميضأة وتوفر صيانة مستمرة لنظام الصرف الصحي والتهوية لمنع الروائح.",
+                    "جودة وكفاءة عمل أنظمة التكييف، ونظافة الفلاتر دورياً، وخلوها من روائح العفن أو تسريبات المياه داخل المسجد.",
+                    "سلامة ونظافة برادات مياه الشرب وخزاناتها وتوفر فلاتر معالجة وبطاقة صيانة دورية معلقة عليها.",
+                    "توفر مواد التعقيم والنظافة والمطهرات والصابون بشكل دائم ومستمر بجميع المرافق الخدمية.",
+                    "خلو السجاد والموكيت من الرطوبة والأتربة والروائح وتوفر آلية منتظمة للغسيل والتعقيم أسبوعياً."
+                ]
+            },
+            {
+                title: "خامساً: الإسعافات الأولية",
+                items: [
+                    "توفر حقيبة إسعافات أولية مثبتة في مكان بارز ومعروف لجميع المنسوبين والمصلين.",
+                    "اكتمال كافة محتويات الحقيبة (شاش معقم، مطهرات، ضمادات، قفازات طبيب، مقص، أربطة ضاغطة).",
+                    "سريان صلاحية المواد الطبية والأدوية داخل حقيبة الإسعافات الأولية وعدم انتهائها.",
+                    "تعليق لوحة أرقام هواتف الطوارئ (911 - الإسعاف - الدفاع المدني) بجانب حقيبة الإسعافات.",
+                    "معرفة المنسوبين والعمالة الموجودة بالموقع بالطريقة الصحيحة لاستخدام حقيبة الإسعافات وتطبيق الإسعاف الأولية."
+                ]
+            },
+            {
+                title: "سادساً: السلامة العامة للمصلين",
+                items: [
+                    "خلو ممرات الحركة وأرضيات الصلاة من أي عوائق أو أسلاك صوتية/كهربائية ممتدة قد تتسبب في التعثر.",
+                    "توفر حوامل وأرفف كافية لتنظيم الأحذية خارج منطقة الصلاة وبشكل لا يعيق الحركة أو مخارج الطوارئ.",
+                    "توفر منحدرات (رمبات) ومسارات مخصصة لتسهيل حركة كبار السن وذوي الإعاقة وفق المعايير المعتمدة.",
+                    "تثبيت السجاد والموكيت بشكل متناسق يمنع التعثر أو الانزلاق أثناء المشي.",
+                    "وجود لوحات تحذيرية وتوعوية بوضوح (مثل: منع التدخين نهائياً، المحافظة على النظافة العامة)."
+                ]
+            },
+            {
+                title: "سابعاً: خطة الطوارئ والإدارة",
+                items: [
+                    "توفر خطة طوارئ وإخلاء معتمدة ومحدثة ومخصصة للمسجد والمرفق.",
+                    "تعليق مخطط هندسي تبسيطي لمسارات الإخلاء ونقاط الخروج بمكان بارز وواضح للمصلين.",
+                    "تحديد موقع نقطة التجمع الآمنة (Assembly Point) خارج المبنى ووضع لوحة إرشادية دالة عليها.",
+                    "وجود آلية تواصل سريعة ومباشرة مع غرفة الطوارئ والأزمات بالفرع عند حدوث الحوادث أو الكوارث.",
+                    "تدريب الإمام والمؤذن والعمالة على الخطوات الأساسية للتصرف وإدارة الحشود أثناء حالات الطوارئ."
+                ]
+            },
+            {
+                title: "ثامناً: العمالة والسلامة",
+                items: [
+                    "التزام جميع عمال الصيانة والنظافة بالنظافة الشخصية والزي الموحد وبطاقات العمل التعريفية الرسمية.",
+                    "ارتداء العمال لمعدات الوقاية الشخصية (PPE) أثناء أعمال الصيانة والنظافة ورفع المظلات.",
+                    "تدريب العمالة الميدانية على استخدام طفايات الحريق والتصرف السليم أثناء الطوارئ.",
+                    "وجود مشرف صيانة معتمد يتابع الأعمال الميدانية والتزام العمال بااشتراطات السلامة المهنية.",
+                    "خلو مقرات سكن العمال أو غرف الخدمات التابعة للمسجد من مخاطر السلامة أو التوصيلات العشوائية."
+                ]
+            },
+            {
+                title: "تاسعاً: الصيانة الدورية",
+                items: [
+                    "وجود سجل معتمد لمتابعة أعمال الصيانة الوقائية والتصحيحية لكافة الأنظمة بالموقع.",
+                    "إجراء الصيانة الدورية لنظام الصوتيات والسماعات وتأمين كافة الكابلات الخاصة به بشكل مخفي وآمن.",
+                    "صيانة ومتابعة مضخات وخزانات المياه والمحابس بانتظام ومعالجة التسريبات فوراً.",
+                    "التجاوب السريع من شركة الصيانة والتشغيل مع البلاغات الميدانية والأعطال فور تلقيها.",
+                    "توفر بطاقات تعقيب وتوقيع دوري معلقة على الأجهزة والمعدات الرئيسية من قبل المؤسسة المنفذة."
+                ]
+            },
+            {
+                title: "عاشراً: النظافة والتعقيم",
+                items: [
+                    "الغسيل والتعقيم الدوري الشامل لسجاد المسجد باستخدام المواد المعتمدة الصحية.",
+                    "نظافة وتطهير الساحات الخارجية والممرات والأسطح والمصليات بشكل يومي ومنتظم.",
+                    "توفر حاويات نفايات ذات أغطية بأعداد كافية والتخلص اليومي المنتظم من المخلفات.",
+                    "تخزين مواد النظافة والمطهرات الكيميائية في مستودع آمن ومغلق ومستقل بعيداً عن المصلين.",
+                    "استخدام مطهرات معقمة ومصرح بها صحياً لضمان سلامة المصلين والزوار."
+                ]
+            },
+            {
+                title: "الحادي عشر: السلامة والصحة المهنية في مصليات النساء",
+                items: [
+                    "توفر مدخل مستقل وآمن لمصلى النساء وممرات خالية تماماً من أي عوائق إنشائية أو كهربائية.",
+                    "وجود مخارج طوارئ مخصصة لمصلى النساء ومزودة بأجهزة إضاءة طوارئ وطفايات حريق صالحة.",
+                    "سلامة التكييف والإضاءة والتهوية الشاملة وتوفر معطرات ومطهرات دائمة بمصلى النساء.",
+                    "نظافة وسلامة دورات المياه والميضأة الخاصة بالنساء وتوفر أدوات التعقيم والتطهير المستمر.",
+                    "سلامة المصاعد الحاضنة إن وجدت وعمل زر الطوارئ وسريان عقد صيانة المصعد ببطاقة فحص سارية."
+                ]
+            },
+            {
+                title: "الثاني عشر: السلامة في البدروم (القبو)",
+                items: [
+                    "توفر نظام تهوية ميكانيكي/طبيعي كافٍ للبدروم لمنع تجمع الرطوبة والروائح أو الغازات.",
+                    "خلو القبو تماماً من تجمع مياه السيول أو تسربات المياه الأرضية/السباكة وجودة مضخات الغاطس.",
+                    "توفر إضاءة كافية ومستمرة وإضاءة طوارئ تغطي كامل مساحة القبو والممرات.",
+                    "خلو البدروم من التخزين العشوائي للمخلفات أو الأثاث القديم أو المواد القابلة للاشتعال.",
+                    "توفر وسائل الإطفاء والإنذار ومخارج الطوارئ المؤدية للخارج مباشرة دون عوائق."
+                ]
+            },
+            {
+                title: "الثالث عشر: السلامة في غرفة الكهرباء",
+                items: [
+                    "إحكام إغلاق باب غرفة الكهرباء الرئيسية ووضع لوحات تحذيرية رسمية (خطر - كهرباء - يمنع الدخول).",
+                    "خلو غرفة الكهرباء تماماً من أي مخزونات أو مهملات أو كراتين أو مواد سريعة الاشتعال.",
+                    "توفر طفاية حريق مخصصة للكهرباء (ثاني أكسيد الكربون CO2) صالحة ومفحوصة وجاهزة للاستخدام.",
+                    "توفر نظام تهوية وتكييف مناسب لغرفة الكهرباء لمنع ارتفاع درجات الحرارة والماس الكهربائي.",
+                    "خلو الغرفة من أي تسربات مياه أو رطوبة وتغطية القنوات والتمديدات الأرضية بشكل آمن ومحكم."
+                ]
+            },
+            {
+                title: "الرابع عشر: الساحات والمنافع والخدمات الخارجية وسكن المنسوبين",
+                items: [
+                    "سلامة ونظافة الساحات والمظلات الخارجية والإنارة المحيطة بالمبنى وخلوها من الأجزاء الآيلة للسقوط.",
+                    "سلامة خزانة مضخات الحريق الخارجية (محبس الفتح والمآخذ) وسهولة وصول سيارات الإطفاء والإنقاذ.",
+                    "تأمين وسائط السلامة والكهرباء بسكن المنسوبين (الإمام/المؤذن/العمال) وعدم وجود مخاطر.",
+                    "سلامة مواقف السيارات والممرات الخارجية وإزالة أي عوائق تؤثر على دخول وخروج سيارات الطوارئ.",
+                    "كفاءة ونظافة وتأمين خزانات المياه الرئيسية والعلوي وتغطيتها بإحكام لمنع التلوث."
+                ]
+            }
+        ];
+
+        // البنود الخاصة بالمباني الإدارية
+        const adminChecklist = [
+            {
+                title: "أولاً: أنظمة إنذار ومكافحة الحريق الإدارية",
+                items: [
+                    "جاهزية أنظمة الإطفاء التلقائي والإنذار المبكر ولوحة التحكم في المبنى الإداري.",
+                    "توفر طفايات الحريق في الممرات والمكاتب مع سريان فحصها الدوري.",
+                    "وضوح خريطة الإخلاء ومسارات مخارج الطوارئ ولوحات EXIT المضيئة.",
+                    "سلامة مضخات وصناديق الحريق المائية وتوفر وصول سريع لمعدات الدفاع المدني."
+                ]
+            },
+            {
+                title: "ثانياً: السلامة الكهربائية والمكتبية",
+                items: [
+                    "سلامة التوصيلات والمقابس الكهربائية بالمكاتب وعدم التحميل الزائد على القواطع.",
+                    "إغلاق اللوحات الكهربائية الرئيسية والفرعية بآمان وصيانتها دورياً.",
+                    "سلامة أجهزة التكييف المركزي والمستقل وتوفر الصيانة الوقائية.",
+                    "تأمين غرف السيرفرات والأجهزة الإلكترونية بنظام إطفاء غازي تلقائي (FM200 / Novec)."
+                ]
+            },
+            {
+                title: "ثالثاً: السلامة المهنية والمرافق العامة",
+                items: [
+                    "سلامة المصاعد الكهربائية وتوفر عقد صيانة ساري وبطاقة فحص معتمدة.",
+                    "نظافة وتعقيم دورات المياه العامة وتأمين التهوية المناسبة.",
+                    "توفر صيدلية إسعافات أولية مكتملة ومحدثة في كل دور إداري.",
+                    "خلو الممرات والمداخل الرئيسية من أي عوائق قد تؤثر على حركة الموظفين والمراجعين."
+                ]
+            }
+        ];
+
+        // البنود الخاصة بالمستودعات
+        const warehousesChecklist = [
+            {
+                title: "أولاً: سلامة التخزين والترتيب",
+                items: [
+                    "الالتزام بالرص الآمن للمواد والكراتين وترك مسافات آمنة تحت الرشاشات التلقائية والأسقف (50 سم على الأقل).",
+                    "ترك ممرات حركة واضحة وخالية تماماً من المواد والأثاث لسهولة المرور والتعامل مع الطوارئ.",
+                    "فصل المواد الكيميائية ومواد النظافة عن المواد القابلة للاشتعال والتخزين العام.",
+                    "تأمين الأرفف المعدنية وتثبيتها جيداً بالأرضيات والجدران لمنع السقوط."
+                ]
+            },
+            {
+                title: "ثانياً: الوقاية من الحريق والسلامة الكهربائية",
+                items: [
+                    "توفر طفايات حريق بودرة و ثاني أكسيد الكربون بعدد كافٍ وسريان صلاحيتها.",
+                    "سلامة نظام الإطفاء التلقائي وشبكة المرشات وكواشف الدخان داخل المستودع.",
+                    "استخدام إضاءة وتوصيلات كهربائية مخصصة للمستودعات ومحمية ضد الشرر والحرارة.",
+                    "منع التدخين نهائياً داخل المستودع مع وضع لوحات تحذيرية بارزة في كافة الممرات."
+                ]
+            },
+            {
+                title: "ثالثاً: التهوية والأمن الميداني",
+                items: [
+                    "توفر نظام تهوية مناسب لمنع ارتفاع درجات الحرارة أو تراكم الروائح والغازات.",
+                    "تأمين أبواب ومخارج الطوارئ وسهولة فتحها من الداخل في كافة الأوقات.",
+                    "توفر معدات وقاية شخصية (PPE) لعمال المستودع (خوذات، قفازات، أحذية سلامة).",
+                    "جاهزية نقاط التجمع الخارجية خارج المستودع وخلو ممرات الطوارئ الخارجية."
+                ]
+            }
+        ];
+
+        let currentTab = 'mosques';
+
+        function renderChecklist(checklistData) {
+            const container = document.getElementById('checklistContainer');
+            container.innerHTML = '';
+
+            checklistData.forEach((section, sIndex) => {
+                const sectionEl = document.createElement('div');
+                sectionEl.className = 'custom-card p-5 md:p-6 rounded-3xl item-avoid-break';
+
+                let itemsHTML = section.items.map((itemText, iIndex) => {
+                    const fieldName = `sec_${sIndex}_item_${iIndex}`;
+                    return `
+                        <div class="p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 hover:bg-white hover:shadow-sm transition">
+                            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                                <div class="text-xs md:text-sm font-bold text-slate-800 flex items-start gap-2 flex-1">
+                                    <span class="bg-emerald-100 text-emerald-800 text-[11px] px-2 py-0.5 rounded-md font-mono shrink-0 mt-0.5">${iIndex + 1}</span>
+                                    <span>${itemText}</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-1.5 shrink-0 w-full lg:w-auto">
+                                    <label class="cursor-pointer flex items-center justify-center gap-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 py-1.5 px-3 rounded-xl text-xs font-bold transition">
+                                        <input type="radio" name="${fieldName}" value="pass" class="accent-emerald-600">
+                                        <span>مطبق / سليم</span>
+                                    </label>
+                                    <label class="cursor-pointer flex items-center justify-center gap-1 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 py-1.5 px-3 rounded-xl text-xs font-bold transition">
+                                        <input type="radio" name="${fieldName}" value="fail" class="accent-red-600">
+                                        <span>ملاحظة</span>
+                                    </label>
+                                    <label class="cursor-pointer flex items-center justify-center gap-1 bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-300 py-1.5 px-3 rounded-xl text-xs font-bold transition">
+                                        <input type="radio" name="${fieldName}" value="na" checked class="accent-slate-500">
+                                        <span>لا ينطبق</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="mt-2.5">
+                                <input type="text" placeholder="إضافة ملاحظة أو إجراء متخذ إن وجد..." class="w-full text-xs p-2 bg-white border border-slate-200 rounded-lg outline-none focus:border-emerald-500 font-semibold text-slate-700">
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                sectionEl.innerHTML = `
+                    <div class="bg-card-header text-white px-4 py-3 rounded-2xl mb-4 shadow-sm flex items-center justify-between header-avoid-break">
+                        <h3 class="text-xs md:text-sm font-bold tracking-wide">${section.title}</h3>
+                        <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-mono px-2.5 py-0.5 rounded-full border border-emerald-400/30">${section.items.length} بنود</span>
+                    </div>
+                    <div class="space-y-3">
+                        ${itemsHTML}
+                    </div>
+                `;
+                container.appendChild(sectionEl);
+            });
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = 'tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all';
+            });
+
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            if (activeBtn) {
+                activeBtn.className = 'tab-btn border-b-4 border-emerald-600 text-emerald-800 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all';
+            }
+
+            const titleEl = document.getElementById('sectionTitle');
+            const mobileTitleEl = document.getElementById('sectionTitleMobile');
+            const lblFacility = document.getElementById('lblFacilityName');
+            const facilityInput = document.getElementById('facilityName');
+            const lblLoc = document.getElementById('lblLocation');
+
+            if (tab === 'mosques') {
+                titleEl.textContent = 'استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها';
+                mobileTitleEl.textContent = 'استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها';
+                lblFacility.innerHTML = 'اسم المسجد / الجامع <span class="text-red-600">*</span>';
+                facilityInput.placeholder = 'أدخل اسم المسجد كامل...';
+                lblLoc.textContent = 'موقع المسجد / الحي';
+                renderChecklist(mosquesChecklist);
+            } else if (tab === 'admin') {
+                titleEl.textContent = 'استمارة الكشف الميداني على المباني الإدارية والخدمية';
+                mobileTitleEl.textContent = 'استمارة الكشف الميداني على المباني الإدارية والخدمية';
+                lblFacility.innerHTML = 'اسم المبنى الإداري <span class="text-red-600">*</span>';
+                facilityInput.placeholder = 'أدخل اسم المبنى الإداري...';
+                lblLoc.textContent = 'الموقع / المدينة';
+                renderChecklist(adminChecklist);
+            } else if (tab === 'warehouses') {
+                titleEl.textContent = 'استمارة الكشف الميداني على المستودعات ومرافق التخزين';
+                mobileTitleEl.textContent = 'استمارة الكشف الميداني على المستودعات ومرافق التخزين';
+                lblFacility.innerHTML = 'اسم المستودع / المرفق <span class="text-red-600">*</span>';
+                facilityInput.placeholder = 'أدخل اسم المستودع...';
+                lblLoc.textContent = 'موقع المستودع / المنطقة';
+                renderChecklist(warehousesChecklist);
+            }
+        }
+
+        function printReport() {
+            document.body.classList.add('pdf-export');
+            window.print();
+            setTimeout(() => {
+                document.body.classList.remove('pdf-export');
+            }, 1000);
+        }
+
+        function sendPDFViaEmail(event) {
+            if (event) event.preventDefault();
+            const facilityName = document.getElementById('facilityName').value;
+            const inspectorName = document.getElementById('inspectorName').value;
+
+            if (!facilityName || !inspectorName) {
+                alert("⚠️ يرجى تعبئة الحقول الأساسية المطلوبة: (اسم الموقع واسم معد التقرير) قبل الإرسال.");
+                return;
+            }
+
+            const btn = document.getElementById('sendEmailBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-base"></i> جاري الإرسال...`;
+            btn.disabled = true;
+
+            const templateParams = {
+                facility_name: facilityName,
+                serial_no: document.getElementById('serialNo').value || 'غير محدد',
+                inspection_date: document.getElementById('inspectionDate').value || 'غير محدد',
+                location: document.getElementById('location').value || 'غير محدد',
+                inspector_name: inspectorName,
+                contractor: document.getElementById('maintenanceContractor').value || 'غير محدد',
+                to_email: 'tawria911@gmail.com'
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                .then(function(response) {
+                    alert("✅ تم إرسال التقرير بنجاح إلى بريد وحدة الطوارئ والأزمات!");
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, function(error) {
+                    alert("❌ تعذر إرسال التقرير تلقائياً. يمكنك الضغط على 'طباعة وحفظ PDF' وإرساله يدوياً.\nالخطأ: " + JSON.stringify(error));
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                });
+        }
+
+        // إعداد التاريخ الهجري واستعراض الاستمارة الأولى عند التحميل
+        window.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('inspectionDate');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = getFormattedHijriDate();
+            }
+            switchTab('mosques');
+        });
+    </script>
+</body>
+</html>
         :root {
             --primary: #047857;
             --primary-hover: #065f46;
