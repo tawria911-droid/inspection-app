@@ -336,14 +336,14 @@
 
     <script>
         // =========================================================
-        // مفاتيح EmailJS لربط الإرسال المباشر للإيميل تلقائياً
+        // مفاتيح EmailJS - تم إضافة رمز الخدمة الجديد
         // =========================================================
-        const EMAILJS_PUBLIC_KEY  = "ضع_مفتاح_PUBLIC_KEY_هنا";
-        const EMAILJS_SERVICE_ID  = "ضع_رمز_SERVICE_ID_هنا";
-        const EMAILJS_TEMPLATE_ID = "ضع_رمز_TEMPLATE_ID_هنا";
+        const EMAILJS_PUBLIC_KEY  = "ضع_المفتاح_العام_Public_Key_هنا"; 
+        const EMAILJS_SERVICE_ID  = "service_w1kg7u8";                  
+        const EMAILJS_TEMPLATE_ID = "ضع_رمز_القالب_Template_ID_هنا"; 
 
         (function() {
-            if(EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "ضع_مفتاح_PUBLIC_KEY_هنا") {
+            if(EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "ضع_المفتاح_العام_Public_Key_هنا") {
                 emailjs.init(EMAILJS_PUBLIC_KEY);
             }
         })();
@@ -719,7 +719,7 @@
             window.print();
         }
 
-        // دالة الإرسال التلقائي دون تدخل المفتش
+        // دالة الإرسال التلقائي عبر EmailJS
         async function sendPDFViaEmail(e) {
             if(e) e.preventDefault();
 
@@ -734,9 +734,13 @@
             const btn = document.getElementById('sendEmailBtn');
             const originalHTML = btn.innerHTML;
 
-            // التحقق من مفاتيح الربط
-            if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === "ضع_مفتاح_PUBLIC_KEY_هنا") {
-                alert("⚠️ يرجى وضع مفاتيح EmailJS الخاصة بك في أعلى كود الصفحة لتفعيل الإرسال المباشر للإيميل.");
+            if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY.includes("ضع_المفتاح")) {
+                alert("⚠️ يرجى وضع المفتاح العام (Public Key) الخاص بك من EmailJS في بداية الكود.");
+                return;
+            }
+
+            if (!EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID.includes("ضع_رمز")) {
+                alert("⚠️ يرجى وضع رمز القالب (Template ID) الخاص بك من EmailJS في بداية الكود.");
                 return;
             }
 
@@ -744,7 +748,7 @@
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري توليد التقرير وإرساله آلياً...`;
 
             try {
-                // 1. تحويل التقرير إلى PDF في الخلفية
+                // 1. تحويل التقرير إلى PDF
                 const element = document.getElementById('inspectionForm');
                 document.body.classList.add('pdf-export');
                 window.scrollTo(0, 0);
@@ -768,7 +772,7 @@
                 }
                 const base64Pdf = window.btoa(binary);
 
-                // 2. إرسال الإيميل مع المرفق تلقائياً إلى tawria911@gmail.com
+                // 2. إرسال الإيميل
                 const templateParams = {
                     facility_name: facName,
                     inspector_name: inspector,
