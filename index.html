@@ -10,22 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- Tailwind CSS & FontAwesome Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- مكتبات تحويل الصفحة لـ PDF وإرسال الإيميل تلقائياً -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-
-    <script>
-        const EMAILJS_PUBLIC_KEY = "ضع_مفتاح_PUBLIC_KEY_هنا";
-        const EMAILJS_SERVICE_ID = "ضع_رمز_SERVICE_ID_هنا";
-        const EMAILJS_TEMPLATE_ID = "ضع_رمز_TEMPLATE_ID_هنا";
-
-        (function() {
-            if(EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "ضع_مفتاح_PUBLIC_KEY_هنا") {
-                emailjs.init(EMAILJS_PUBLIC_KEY);
-            }
-        })();
-    </script>
 
     <style>
         * {
@@ -172,7 +163,7 @@
             <!-- الشعار مع اسم الوزارة -->
             <div class="flex items-center space-x-4 space-x-reverse">
                 <div class="bg-white p-1.5 md:p-2 rounded-2xl flex items-center justify-center shadow-lg border border-emerald-400/40 shrink-0 min-w-[60px] min-h-[60px]">
-                    <img src="100.jpg" onerror="this.onerror=null; this.src='input_file_0.png';" alt="شعار وزارة الشؤون الإسلامية" class="h-14 md:h-16 w-auto object-contain">
+                    <img src="100.jpg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/047857/ffffff?text=الوزارة';" alt="شعار وزارة الشؤون الإسلامية" class="h-14 md:h-16 w-auto object-contain">
                 </div>
                 <div>
                     <h1 class="text-lg md:text-2xl font-bold tracking-normal text-emerald-400 drop-shadow-sm leading-tight">وزارة الشؤون الإسلامية والدعوة والإرشاد</h1>
@@ -191,13 +182,13 @@
     <!-- شريط التنقل بين الاستمارات -->
     <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
-            <button onclick="switchTab('mosques')" id="tab-mosques" class="tab-btn border-b-4 border-emerald-600 text-emerald-800 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+            <button type="button" onclick="switchTab('mosques')" id="tab-mosques" class="tab-btn border-b-4 border-emerald-600 text-emerald-800 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
                 <i class="fa-solid fa-mosque text-base"></i> (1) المساجد والجوامع ومرافقها
             </button>
-            <button onclick="switchTab('admin')" id="tab-admin" class="tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+            <button type="button" onclick="switchTab('admin')" id="tab-admin" class="tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
                 <i class="fa-solid fa-building-user text-base"></i> (2) المباني الإدارية
             </button>
-            <button onclick="switchTab('warehouses')" id="tab-warehouses" class="tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
+            <button type="button" onclick="switchTab('warehouses')" id="tab-warehouses" class="tab-btn border-b-4 border-transparent text-slate-600 hover:text-slate-900 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
                 <i class="fa-solid fa-warehouse text-base"></i> (3) المستودعات ومرافق التخزين
             </button>
         </div>
@@ -214,7 +205,7 @@
                 <div class="flex justify-between items-center border-b-2 border-slate-200 pb-5 mb-5 gap-4">
                     <!-- الجهة مع الشعار -->
                     <div class="flex items-center gap-3.5 text-right">
-                        <img src="100.jpg" onerror="this.onerror=null; this.src='input_file_0.png';" alt="شعار الوزارة" class="h-14 md:h-20 w-auto object-contain shrink-0">
+                        <img src="100.jpg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/047857/ffffff?text=الوزارة';" alt="شعار الوزارة" class="h-14 md:h-20 w-auto object-contain shrink-0">
                         <div>
                             <h2 class="text-sm md:text-lg font-bold text-emerald-950 leading-tight">وزارة الشؤون الإسلامية والدعوة والإرشاد</h2>
                             <h3 class="text-xs md:text-sm font-bold text-slate-700 mt-0.5">فرع منطقة مكة المكرمة</h3>
@@ -344,6 +335,19 @@
     </footer>
 
     <script>
+        // =========================================================
+        // مفاتيح EmailJS لربط الإرسال المباشر للإيميل تلقائياً
+        // =========================================================
+        const EMAILJS_PUBLIC_KEY  = "ضع_مفتاح_PUBLIC_KEY_هنا";
+        const EMAILJS_SERVICE_ID  = "ضع_رمز_SERVICE_ID_هنا";
+        const EMAILJS_TEMPLATE_ID = "ضع_رمز_TEMPLATE_ID_هنا";
+
+        (function() {
+            if(EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "ضع_مفتاح_PUBLIC_KEY_هنا") {
+                emailjs.init(EMAILJS_PUBLIC_KEY);
+            }
+        })();
+
         function getFormattedHijriDate() {
             try {
                 const today = new Date();
@@ -379,6 +383,7 @@
             }
         }
 
+        // قائمة البنود الـ 14 الكاملة للمساجد والجوامع
         const mosquesChecklist = [
             {
                 title: "أولاً: الكشف على أنظمة الحريق والإنذارات",
@@ -714,45 +719,12 @@
             window.print();
         }
 
-        function generatePDF() {
-            const element = document.getElementById('inspectionForm');
-            const facName = document.getElementById('facilityName').value || "تقرير_كشف_ميداني_رسمي";
-            
-            document.body.classList.add('pdf-export');
-            window.scrollTo(0, 0);
+        // دالة الإرسال التلقائي دون تدخل المفتش
+        async function sendPDFViaEmail(e) {
+            if(e) e.preventDefault();
 
-            const opt = {
-                margin:       [8, 8, 8, 8],
-                filename:     `${facName}_تقرير_طوارئ_وزارة_الشؤون_الإسلامية.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: 2, 
-                    useCORS: true,
-                    logging: false,
-                    scrollX: 0,
-                    scrollY: 0,
-                    windowWidth: 1200
-                },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { 
-                    mode: ['css', 'legacy'],
-                    avoid: ['.item-avoid-break', '.custom-card']
-                }
-            };
-
-            setTimeout(() => {
-                html2pdf().set(opt).from(element).save().then(() => {
-                    document.body.classList.remove('pdf-export');
-                }).catch((err) => {
-                    document.body.classList.remove('pdf-export');
-                    console.error(err);
-                });
-            }, 400);
-        }
-
-        function sendPDFViaEmail(e) {
-            const facName = document.getElementById('facilityName').value;
-            const inspector = document.getElementById('inspectorName').value;
+            const facName = document.getElementById('facilityName').value.trim();
+            const inspector = document.getElementById('inspectorName').value.trim();
 
             if(!facName || !inspector) {
                 alert("⚠️ يرجى تعبئة اسم المسجد/المنشأة واسم معد التقرير أولاً قبل الإرسال.");
@@ -762,55 +734,64 @@
             const btn = document.getElementById('sendEmailBtn');
             const originalHTML = btn.innerHTML;
 
-            if (typeof EMAILJS_PUBLIC_KEY !== 'undefined' && EMAILJS_PUBLIC_KEY !== "ضع_مفتاح_PUBLIC_KEY_هنا") {
-                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...`;
-                btn.disabled = true;
+            // التحقق من مفاتيح الربط
+            if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY === "ضع_مفتاح_PUBLIC_KEY_هنا") {
+                alert("⚠️ يرجى وضع مفاتيح EmailJS الخاصة بك في أعلى كود الصفحة لتفعيل الإرسال المباشر للإيميل.");
+                return;
+            }
 
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري توليد التقرير وإرساله آلياً...`;
+
+            try {
+                // 1. تحويل التقرير إلى PDF في الخلفية
+                const element = document.getElementById('inspectionForm');
+                document.body.classList.add('pdf-export');
+                window.scrollTo(0, 0);
+
+                const opt = {
+                    margin:       [8, 8, 8, 8],
+                    filename:     `${facName}_تقرير_طوارئ.pdf`,
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, logging: false },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                const pdfWorker = html2pdf().set(opt).from(element);
+                const pdfArrayBuffer = await pdfWorker.output('arraybuffer');
+                document.body.classList.remove('pdf-export');
+
+                let binary = '';
+                const bytes = new Uint8Array(pdfArrayBuffer);
+                for (let i = 0; i < bytes.byteLength; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                const base64Pdf = window.btoa(binary);
+
+                // 2. إرسال الإيميل مع المرفق تلقائياً إلى tawria911@gmail.com
                 const templateParams = {
                     facility_name: facName,
                     inspector_name: inspector,
                     inspection_date: document.getElementById('inspectionDate').value,
-                    location: document.getElementById('location').value,
+                    location: document.getElementById('location').value || "غير محدد",
+                    gps_coords: document.getElementById('gpsCoords').value || "غير محدد",
                     serial_no: document.getElementById('serialNo').value || "غير محدد",
                     contractor: document.getElementById('maintenanceContractor').value || "غير محدد",
-                    to_email: "tawria911@gmail.com"
+                    content_pdf: "data:application/pdf;base64," + base64Pdf
                 };
 
-                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-                    .then(function() {
-                        generatePDF();
-                        alert("✅ تم إرسال التقرير أوتوماتيكياً بنجاح إلى (tawria911@gmail.com)!");
-                        btn.innerHTML = originalHTML;
-                        btn.disabled = false;
-                    }, function(error) {
-                        alert("❌ تعذر الإرسال الآلي، سيتم فتح تطبيق البريد المباشر.");
-                        btn.innerHTML = originalHTML;
-                        btn.disabled = false;
-                        fallbackMailto(facName, inspector);
-                    });
-            } else {
-                generatePDF();
-                fallbackMailto(facName, inspector);
-            }
-        }
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
 
-        function fallbackMailto(facName, inspector) {
-            const targetEmail = "tawria911@gmail.com";
-            const subject = encodeURIComponent(`تقرير كشف ميداني رسمي: ${facName} - وزارة الشؤون الإسلامية`);
-            const body = encodeURIComponent(
-                `السلام عليكم ورحمة الله وبركاته،\n\n` +
-                `مرفق تقرير الكشف الميداني الشامل الخاص بـ: (${facName})\n` +
-                `• الجهة: وزارة الشؤون الإسلامية والدعوة والإرشاد بمنطقة مكة المكرمة\n` +
-                `• معد التقرير: ${inspector}\n` +
-                `• تاريخ الجولة التفتيشية الهجري: ${document.getElementById('inspectionDate').value}\n` +
-                `• الإحداثيات: ${document.getElementById('gpsCoords').value}\n` +
-                `• الاعتماد الرسمي: م. ناصر بن عبدالرحمن السكتاوي (مدير وحدة الأزمات والطوارئ والكوارث)\n\n` +
-                `يرجى إرفاق ملف الـ PDF المحمل أوتوماتيكياً مع الرسالة.`
-            );
-            
-            setTimeout(() => {
-                window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
-            }, 1200);
+                alert("✅ تم إرسال التقرير بنجاح وبشكل آلي إلى إيميل الوحدة (tawria911@gmail.com)!");
+
+            } catch (error) {
+                document.body.classList.remove('pdf-export');
+                console.error("خطأ في الإرسال:", error);
+                alert("❌ حدث خطأ أثناء الإرسال الآلي. يرجى التأكد من الاتصال بالإنترنت وصحة المفاتيح.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            }
         }
     </script>
 </body>
