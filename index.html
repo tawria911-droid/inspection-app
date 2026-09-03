@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>استمارة الكشف الميداني - فرع وزارة الشؤون الإسلامية بمكة المكرمة</title>
     
-    <!-- الخطوط والأيقونات -->
+    <!-- خط تجول وأيقونات FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     
@@ -50,7 +50,6 @@
             border: 1px solid var(--border-color);
         }
 
-        /* الهيدر والعناوين */
         .header {
             text-align: center;
             border-bottom: 2px solid var(--primary);
@@ -94,7 +93,6 @@
             padding-bottom: 8px;
         }
 
-        /* شبكة النماذج */
         .grid-form {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -149,7 +147,6 @@
             background: #475569;
         }
 
-        /* قائمة بنود الفحص */
         .items-list {
             display: flex;
             flex-direction: column;
@@ -208,7 +205,6 @@
             border-color: var(--secondary);
         }
 
-        /* الأزرار السفليّة */
         .actions-container {
             margin-top: 30px;
             display: flex;
@@ -255,7 +251,6 @@
             gap: 8px;
         }
 
-        /* تنسيقات الطباعة */
         @media print {
             body { background: white; color: black; padding: 0; }
             .container { border: none; box-shadow: none; background: white; color: black; width: 100%; max-width: 100%; }
@@ -532,7 +527,6 @@
 </div>
 
 <script>
-    // تهيئة مفاتيح EmailJS
     const EMAILJS_PUBLIC_KEY = "p0em28uG45VkqRcrN";
     const EMAILJS_SERVICE_ID = "service_w1kg7u8";
     const EMAILJS_TEMPLATE_ID = "template_k0n0gd8";
@@ -541,14 +535,12 @@
         emailjs.init(EMAILJS_PUBLIC_KEY);
     })();
 
-    // تعيين تاريخ اليوم تلقائياً عند فتح الصفحة
     document.addEventListener("DOMContentLoaded", function() {
         const today = new Date().toISOString().split('T')[0];
         const dateInput = document.getElementById('inspectionDate');
         if (dateInput) dateInput.value = today;
     });
 
-    // دالة جلب الموقع الجغرافي
     function fetchGPS() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -567,7 +559,6 @@
         }
     }
 
-    // دالة إرسال التقرير عبر EmailJS
     async function sendPDFViaEmail(e) {
         if (e) e.preventDefault();
 
@@ -587,7 +578,6 @@
         }
 
         try {
-            // تجميع بنود الفحص والملاحظات
             let reportDetails = "";
             const items = document.querySelectorAll('.check-item');
 
@@ -602,7 +592,6 @@
                 reportDetails += `${title}\n   • الحالة: ${status}\n   • الملاحظات: ${note}\n-----------------------------------\n`;
             });
 
-            // تجهيز البيانات
             const templateParams = {
                 facility_name: facName,
                 inspector_name: inspector,
@@ -614,7 +603,6 @@
                 report_details: reportDetails
             };
 
-            // الإرسال الفعلي
             await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
             
             alert("✅ تم إرسال التقرير بنجاح إلى إيميل الوحدة (tawria911@gmail.com)!");
