@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>وزارة الشؤون الإسلامية - وحدة الطوارئ والأزمات والكوارث بمنطقة مكة المكرمة</title>
+    <title>وزارة الشؤون الإسلامية - استمارة الكشف الميداني (14 بنداً)</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
@@ -30,7 +30,6 @@
             box-sizing: border-box !important;
         }
         
-        /* خلفية الصفحة المزخرفة بأنماط إسلامية هندسية ناعمة */
         body { 
             font-family: 'Cairo', sans-serif; 
             background-color: #f1f5f9; 
@@ -38,7 +37,6 @@
             color: #0f172a; 
         }
 
-        /* خلفيات التدرج الملكي */
         .bg-header-gradient {
             background: linear-gradient(135deg, #091e17 0%, #0f172a 60%, #064e3b 100%);
             background-image: radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.15) 0%, transparent 40%),
@@ -51,7 +49,6 @@
 
         .font-signature { font-family: 'Amiri', serif; }
         
-        /* بطاقات محددة وبها ظلال فخمة */
         .custom-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -59,7 +56,6 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
         }
 
-        /* حماية حواشي التصدير للـ PDF */
         .item-avoid-break {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
@@ -160,7 +156,7 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- Header الرسمي المزخرف -->
+    <!-- Header العلوي -->
     <header class="bg-header-gradient text-white shadow-2xl border-b-4 border-emerald-500 relative overflow-hidden no-print">
         <div class="max-w-7xl mx-auto px-4 py-5 flex flex-wrap justify-between items-center gap-4 relative z-10">
             <div class="flex items-center space-x-4 space-x-reverse">
@@ -173,13 +169,13 @@
                 </div>
             </div>
             <div class="text-left bg-slate-900/80 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-emerald-500/30 shadow-inner">
-                <span class="text-[11px] text-slate-400 block font-semibold">بريد استقبال التقارير المباشر:</span>
+                <span class="text-[11px] text-slate-400 block font-semibold">استقبال التقارير الإلكترونية:</span>
                 <span class="text-sm font-extrabold text-emerald-400 tracking-wide">tawria911@gmail.com</span>
             </div>
         </div>
     </header>
 
-    <!-- التنقل بين الاستمارات -->
+    <!-- شريط التنقل بين الاستمارات -->
     <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
             <button onclick="switchTab('mosques')" id="tab-mosques" class="tab-btn border-b-4 border-emerald-600 text-emerald-700 font-extrabold py-4 px-6 text-sm md:text-base flex items-center gap-2.5 whitespace-nowrap transition-all">
@@ -194,22 +190,23 @@
         </div>
     </nav>
 
-    <!-- محتوى الاستمارة -->
+    <!-- المحتوى الرئيسي -->
     <main class="flex-grow max-w-7xl w-full mx-auto p-3 md:p-6">
         <form id="inspectionForm" onsubmit="event.preventDefault();">
             
-            <!-- هيدر التقرير -->
+            <!-- هيدر التقرير الرسمي -->
             <div class="custom-card p-5 md:p-7 rounded-3xl mb-6 item-avoid-break relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-2 h-full bg-emerald-600"></div>
+                
                 <div class="flex justify-between items-center border-b-2 border-emerald-600/30 pb-4 mb-5">
                     <div class="text-right">
-                        <h2 class="text-base md:text-xl font-black text-emerald-900">وزارة الشؤون الإسلامية والدعوة والإرشاد</h2>
+                        <h2 class="text-base md:text-lg font-black text-emerald-900">وزارة الشؤون الإسلامية والدعوة والإرشاد</h2>
                         <h3 class="text-xs md:text-sm font-bold text-slate-700 mt-0.5">فرع منطقة مكة المكرمة</h3>
                         <p class="text-[11px] md:text-xs font-bold text-emerald-700 mt-0.5">وحدة الطوارئ والأزمات والكوارث</p>
                     </div>
                     <div class="text-center">
                         <span class="bg-slate-900 text-emerald-400 text-[10px] md:text-xs font-bold px-3.5 py-1 rounded-full inline-block mb-1.5 shadow-sm border border-emerald-500/20">تقرير ميداني رسمي</span>
-                        <h2 class="text-xs md:text-lg font-black text-slate-900" id="sectionTitle">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها</h2>
+                        <h2 class="text-xs md:text-base font-black text-slate-900" id="sectionTitle">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها (14 بنداً رسمياً)</h2>
                     </div>
                     <div class="text-left text-[10px] md:text-xs text-slate-600">
                         <p class="font-extrabold text-slate-800">رؤية المملكة 2030</p>
@@ -251,10 +248,10 @@
                 </div>
             </div>
 
-            <!-- حاوية البنود الذكية -->
+            <!-- حاوية البنود المفصلة -->
             <div id="checklistContainer" class="space-y-6"></div>
 
-            <!-- التوقيعات والاعتماد الرسمي -->
+            <!-- التوقيع والاعتماد الرسميون -->
             <div class="custom-card p-5 md:p-7 rounded-3xl mt-6 item-avoid-break">
                 <h3 class="text-base font-black text-slate-900 border-b border-slate-200 pb-3.5 mb-6 flex items-center gap-2">
                     <i class="fa-solid fa-file-signature text-emerald-600 text-lg"></i> التوقيعات والاعتماد الرسمي للتقرير
@@ -379,7 +376,7 @@
             {
                 title: "ثالثاً: السلامة الإنشائية",
                 items: [
-                    "السقف والجدران بحالة جيدة وخالية من التشققات الخطرة.",
+                    "السقف والجدران بحالة جيدة وخالية من التتشققات الخطرة.",
                     "الأرضيات غير زلقة وتوفر مسار آمن للمصلين.",
                     "السلالم آمنة وبها درابزين متين.",
                     "لا توجد عوائق إنشائية أو تعديات في الممرات.",
@@ -463,7 +460,7 @@
                     "مخارج طوارئ مخصصة غير مغلقة ومزودة بإنارة طوارئ وتؤدي للخارج مع توفر طفايات حريق.",
                     "المكيفات تعمل بكفاءة والفلاتر نظيفة ولا توجد روائح أو تسريب مياه وبطاقة صيانة معلقة.",
                     "دورات المياه الخاصة بالنساء نظيفة ومعقمة وبها تهوية جيدة والصرف يعمل بسليم.",
-                    "ستائر وحواجز تحقق الخخصوصية، تنظيم الأحذية/العربات، سلال نفايات كافية، وعقد صيانة ونظافة المصعد."
+                    "ستائر وحواجز تحقق الخصوصية، تنظيم الأحذية/العربات، سلال نفايات كافية، وعقد صيانة ونظافة المصعد."
                 ]
             },
             {
@@ -730,7 +727,7 @@
             const originalHTML = btn.innerHTML;
 
             if (typeof EMAILJS_PUBLIC_KEY !== 'undefined' && EMAILJS_PUBLIC_KEY !== "ضع_مفتاح_PUBLIC_KEY_هنا") {
-                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال أوتوماتيكياً...`;
+                btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...`;
                 btn.disabled = true;
 
                 const templateParams = {
@@ -746,11 +743,11 @@
                 emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
                     .then(function() {
                         generatePDF();
-                        alert("✅ تم إرسال بيانات التقرير أوتوماتيكياً بنجاح إلى (tawria911@gmail.com)!");
+                        alert("✅ تم إرسال التقرير أوتوماتيكياً بنجاح إلى (tawria911@gmail.com)!");
                         btn.innerHTML = originalHTML;
                         btn.disabled = false;
                     }, function(error) {
-                        alert("❌ تعذر الإرسال الآلي، سيتم فتح تطبيق البريد المباشر كبديل.");
+                        alert("❌ تعذر الإرسال الآلي، سيتم فتح تطبيق البريد المباشر.");
                         btn.innerHTML = originalHTML;
                         btn.disabled = false;
                         fallbackMailto(facName, inspector);
@@ -772,7 +769,7 @@
                 `• تاريخ الجولة التفتيشية الهجري: ${document.getElementById('inspectionDate').value}\n` +
                 `• الإحداثيات: ${document.getElementById('gpsCoords').value}\n` +
                 `• الاعتماد: م. ناصر بن عبدالرحمن السكتاوي (مدير وحدة الأزمات والطوارئ والكوارث)\n\n` +
-                `يرجى إرفاق ملف الـ PDF المحمل تلقائياً.`
+                `يرجى إرفاق ملف الـ PDF المحمل أوتوماتيكياً.`
             );
             
             setTimeout(() => {
