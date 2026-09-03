@@ -336,16 +336,14 @@
 
     <script>
         // =========================================================
-        // مفاتيح EmailJS - تم إضافة رمز الخدمة الجديد
+        // مفاتيح EmailJS الرسمية الخاصة بك
         // =========================================================
-        const EMAILJS_PUBLIC_KEY  = "ضع_المفتاح_العام_Public_Key_هنا"; 
+        const EMAILJS_PUBLIC_KEY  = "p0em28uG45VkqRcrN"; 
         const EMAILJS_SERVICE_ID  = "service_w1kg7u8";                  
-        const EMAILJS_TEMPLATE_ID = "ضع_رمز_القالب_Template_ID_هنا"; 
+        const EMAILJS_TEMPLATE_ID = "template_k0n0gd8"; 
 
         (function() {
-            if(EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "ضع_المفتاح_العام_Public_Key_هنا") {
-                emailjs.init(EMAILJS_PUBLIC_KEY);
-            }
+            emailjs.init(EMAILJS_PUBLIC_KEY);
         })();
 
         function getFormattedHijriDate() {
@@ -734,16 +732,6 @@
             const btn = document.getElementById('sendEmailBtn');
             const originalHTML = btn.innerHTML;
 
-            if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY.includes("ضع_المفتاح")) {
-                alert("⚠️ يرجى وضع المفتاح العام (Public Key) الخاص بك من EmailJS في بداية الكود.");
-                return;
-            }
-
-            if (!EMAILJS_TEMPLATE_ID || EMAILJS_TEMPLATE_ID.includes("ضع_رمز")) {
-                alert("⚠️ يرجى وضع رمز القالب (Template ID) الخاص بك من EmailJS في بداية الكود.");
-                return;
-            }
-
             btn.disabled = true;
             btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري توليد التقرير وإرساله آلياً...`;
 
@@ -772,7 +760,7 @@
                 }
                 const base64Pdf = window.btoa(binary);
 
-                // 2. إرسال الإيميل
+                // 2. إرسال الإيميل مع الملف المرفق
                 const templateParams = {
                     facility_name: facName,
                     inspector_name: inspector,
@@ -791,7 +779,7 @@
             } catch (error) {
                 document.body.classList.remove('pdf-export');
                 console.error("خطأ في الإرسال:", error);
-                alert("❌ حدث خطأ أثناء الإرسال الآلي. يرجى التأكد من الاتصال بالإنترنت وصحة المفاتيح.");
+                alert("❌ حدث خطأ أثناء الإرسال الآلي. يرجى التأكد من الاتصال بالإنترنت.");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalHTML;
