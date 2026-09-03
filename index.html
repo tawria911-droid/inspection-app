@@ -31,18 +31,25 @@
         }
         body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #0f172a; }
         
+        /* 🛠️ قواعد منع انقسام البنود والبطاقات عبر الصفحات */
         .item-avoid-break {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
+            -webkit-column-break-inside: avoid !important;
         }
 
-        /* 🛠️ حل حاسم لقص الحواف اليمين واليسار أثناء استخراج الـ PDF */
+        .header-avoid-break {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+        }
+
+        /* تثبيت عرض A4 القياسي أثناء تصدير الـ PDF */
         body.pdf-export {
-            width: 780px !important;
-            min-width: 780px !important;
-            max-width: 780px !important;
+            width: 790px !important;
+            min-width: 790px !important;
+            max-width: 790px !important;
             margin: 0 auto !important;
-            padding: 15px 25px !important;
+            padding: 15px !important;
             background: #ffffff !important;
             direction: rtl !important;
         }
@@ -59,23 +66,29 @@
             padding: 0 !important;
         }
 
-        /* إعادة تنظيم الأعمدة لتناسب قياس A4 دون قص الهوامش */
-        body.pdf-export .grid-cols-1.md\:grid-cols-3 {
-            display: grid !important;
-            grid-template-columns: repeat(3, 1fr) !important;
+        /* ضبط شبكة العناصر في تصدير PDF */
+        body.pdf-export .grid {
+            display: flex !important;
+            flex-wrap: wrap !important;
             gap: 10px !important;
         }
+
+        body.pdf-export .grid-cols-1.md\:grid-cols-3 > * {
+            width: 31% !important;
+            flex-grow: 1 !important;
+        }
         
-        body.pdf-export .grid-cols-1.md\:grid-cols-2 {
-            display: grid !important;
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 10px !important;
+        body.pdf-export .grid-cols-1.md\:grid-cols-2 > * {
+            width: 48% !important;
+            flex-grow: 1 !important;
         }
 
         body.pdf-export .grid-cols-1.md\:grid-cols-12 {
             display: flex !important;
+            flex-direction: row !important;
             justify-content: space-between !important;
             align-items: center !important;
+            width: 100% !important;
             gap: 10px !important;
         }
 
@@ -83,10 +96,23 @@
             width: 48% !important;
         }
 
+        body.pdf-export .grid-cols-3 {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 4px !important;
+        }
+
+        body.pdf-export .grid-cols-3 > label {
+            flex: 1 !important;
+            padding: 4px 2px !important;
+            font-size: 11px !important;
+            justify-content: center !important;
+        }
+
         body.pdf-export input[type="text"] {
             border: 1px solid #cbd5e1 !important;
             background-color: #ffffff !important;
-            padding: 4px 8px !important;
+            padding: 5px 8px !important;
             font-size: 11px !important;
         }
 
@@ -94,6 +120,7 @@
             .no-print { display: none !important; }
             body { background: white; font-size: 8.5pt; }
             .card-print { border: 1px solid #cbd5e1 !important; box-shadow: none !important; }
+            .item-avoid-break { page-break-inside: avoid !important; break-inside: avoid !important; }
         }
     </style>
 </head>
@@ -616,10 +643,11 @@
 
             data.forEach((cat, cIdx) => {
                 const catCard = document.createElement('div');
-                catCard.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-print mb-6';
+                // إضافة خاصية item-avoid-break للبطاقة بالكامل لمنع انفصال الهيدر عن الفقرات
+                catCard.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-print mb-6 item-avoid-break';
                 
                 let html = `
-                <div class="bg-slate-900 text-white px-4 md:px-6 py-3 font-extrabold text-sm md:text-base flex justify-between items-center border-b border-slate-800 item-avoid-break">
+                <div class="bg-slate-900 text-white px-4 md:px-6 py-3 font-extrabold text-sm md:text-base flex justify-between items-center border-b border-slate-800 header-avoid-break">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-emerald-400"></i> ${cat.title}</span>
                     <span class="bg-emerald-700 text-white text-xs px-2.5 py-0.5 rounded-full font-bold">${cat.items.length} فقرات</span>
                 </div>
@@ -713,11 +741,9 @@
             const element = document.getElementById('inspectionForm');
             const facName = document.getElementById('facilityName').value || "تقرير_كشف_ميداني";
             
-            // تفعيل نمط العرض الصارم لحماية الحواف من القص
             document.body.classList.add('pdf-export');
             window.scrollTo(0, 0);
 
-            // إعدادات محرك الـ PDF المطورة
             const opt = {
                 margin:       [8, 8, 8, 8],
                 filename:     `${facName}_تقرير_طوارئ_وزارة_الشؤون_الإسلامية.pdf`,
@@ -728,10 +754,14 @@
                     logging: false,
                     scrollX: 0,
                     scrollY: 0,
-                    windowWidth: 800
+                    windowWidth: 1200
                 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['css', 'legacy'] }
+                // 💡 تفعيل وضع منع انقسام العناصر الحرج
+                pagebreak:    { 
+                    mode: ['css', 'legacy'],
+                    avoid: ['.item-avoid-break', '.card-print']
+                }
             };
 
             setTimeout(() => {
@@ -741,7 +771,7 @@
                     document.body.classList.remove('pdf-export');
                     console.error(err);
                 });
-            }, 300);
+            }, 400);
         }
 
         function sendPDFViaEmail(e) {
