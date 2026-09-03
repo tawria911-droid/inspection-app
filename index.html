@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>وزارة الشؤون الإسلامية - استمارة الكشف الميداني</title>
 
+    <!-- استيراد خط تجول Tajawal من Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- Tailwind CSS & FontAwesome Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- مكتبة تحويل الصفحة لـ PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
@@ -103,8 +106,10 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
+    <!-- Header العلوي الرئيسي -->
     <header class="bg-header-gradient text-white shadow-2xl border-b-4 border-emerald-500 relative overflow-hidden no-print">
         <div class="max-w-7xl mx-auto px-4 py-4 md:py-5 flex flex-wrap justify-between items-center gap-4 relative z-10">
+            <!-- الشعار مع اسم الوزارة -->
             <div class="flex items-center space-x-4 space-x-reverse">
                 <div class="bg-white p-1.5 md:p-2 rounded-2xl flex items-center justify-center shadow-lg border border-emerald-400/40 shrink-0 min-w-[60px] min-h-[60px]">
                     <img src="./100.jpg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/047857/ffffff?text=الوزارة';" alt="شعار وزارة الشؤون الإسلامية" class="h-14 md:h-16 w-auto object-contain">
@@ -115,6 +120,7 @@
                 </div>
             </div>
 
+            <!-- معلومات الاتصال بالأزمات -->
             <div class="text-left bg-slate-900/90 backdrop-blur-md px-4 md:px-5 py-2.5 rounded-2xl border border-emerald-500/30 shadow-inner">
                 <span class="text-[11px] text-slate-300 block font-semibold tracking-wide">استقبال التقارير الإلكترونية:</span>
                 <span class="text-xs md:text-sm font-bold text-emerald-400 tracking-wider dir-ltr">tawria911@gmail.com</span>
@@ -122,6 +128,7 @@
         </div>
     </header>
 
+    <!-- شريط التنقل بين الاستمارات -->
     <nav class="bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm sticky top-0 z-50 no-print">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
             <button type="button" onclick="switchTab('mosques')" id="tab-mosques" class="tab-btn border-b-4 border-emerald-600 text-emerald-800 font-bold py-4 px-6 text-xs md:text-sm flex items-center gap-2.5 whitespace-nowrap transition-all">
@@ -136,13 +143,16 @@
         </div>
     </nav>
 
+    <!-- المحتوى الرئيسي -->
     <main class="flex-grow max-w-7xl w-full mx-auto p-3 md:p-6">
         <form id="inspectionForm" onsubmit="event.preventDefault();">
             
+            <!-- هيدر التقرير الرسمي المخصص للطباعة والـ PDF -->
             <div class="custom-card p-5 md:p-7 rounded-3xl mb-6 item-avoid-break relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-2.5 h-full bg-emerald-600"></div>
                 
                 <div class="flex justify-between items-center border-b-2 border-slate-200 pb-5 mb-5 gap-4">
+                    <!-- الجهة مع الشعار -->
                     <div class="flex items-center gap-3.5 text-right">
                         <img src="./100.jpg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/047857/ffffff?text=الوزارة';" alt="شعار الوزارة" class="h-14 md:h-20 w-auto object-contain shrink-0">
                         <div>
@@ -152,22 +162,26 @@
                         </div>
                     </div>
 
+                    <!-- العنوان المركزي -->
                     <div class="text-center flex-1 hidden sm:block">
                         <span class="bg-slate-900 text-emerald-400 text-[10px] md:text-xs font-bold px-3.5 py-1 rounded-full inline-block mb-1.5 shadow-sm border border-emerald-500/20">تقرير ميداني رسمي معتمد</span>
                         <h2 class="text-xs md:text-base font-bold text-slate-900 leading-snug" id="sectionTitle">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها</h2>
                     </div>
 
+                    <!-- رؤية 2030 -->
                     <div class="text-left text-[10px] md:text-xs text-slate-600 shrink-0">
                         <p class="font-bold text-slate-900 text-xs md:text-sm">رؤية المملكة 2030</p>
                         <p class="text-emerald-700 font-bold mt-0.5">السلامة والوقاية أولاً</p>
                     </div>
                 </div>
 
+                <!-- العنوان التكيفي للشاشات الصغيرة -->
                 <div class="block sm:hidden text-center mb-4 pb-3 border-b border-slate-100">
                     <span class="bg-slate-900 text-emerald-400 text-[10px] font-bold px-3 py-0.5 rounded-full inline-block mb-1">تقرير ميداني رسمي</span>
                     <h2 class="text-xs font-bold text-slate-900" id="sectionTitleMobile">استمارة الكشف الميداني على المساجد والجوامع والمرافق التابعة لها</h2>
                 </div>
 
+                <!-- البيانات العامة -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 bg-slate-50/90 p-4 rounded-2xl border border-slate-200/90">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" id="lblFacilityName">اسم المسجد / الجامع <span class="text-red-600">*</span></label>
@@ -201,14 +215,17 @@
                 </div>
             </div>
 
+            <!-- حاوية البنود المفصلة -->
             <div id="checklistContainer" class="space-y-6"></div>
 
+            <!-- التوقيع والاعتماد الرسميون -->
             <div class="custom-card p-5 md:p-7 rounded-3xl mt-6 item-avoid-break">
                 <h3 class="text-sm md:text-base font-bold text-slate-900 border-b border-slate-200 pb-3.5 mb-6 flex items-center gap-2">
                     <i class="fa-solid fa-file-signature text-emerald-700 text-lg"></i> التوقيعات والاعتماد الرسمي للتقرير
                 </h3>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- توقيع معد التقرير -->
                     <div class="border border-slate-200/90 p-5 rounded-2xl bg-slate-50/60 flex flex-col justify-between shadow-inner">
                         <div>
                             <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2.5">
@@ -227,6 +244,7 @@
                         </div>
                     </div>
 
+                    <!-- توقيع المعتمد الرسمي -->
                     <div class="border border-slate-200/90 p-5 rounded-2xl bg-slate-50/60 flex flex-col justify-between shadow-inner">
                         <div>
                             <div class="flex items-center gap-2 mb-4 border-b border-slate-200 pb-2.5">
@@ -248,6 +266,7 @@
                 </div>
             </div>
 
+            <!-- أزرار العمليات -->
             <div class="no-print mt-8 flex flex-wrap gap-4 justify-end">
                 <button type="button" onclick="printReport()" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3.5 px-7 rounded-2xl shadow-lg transition flex items-center gap-2.5 active:scale-95 text-xs md:text-sm">
                     <i class="fa-solid fa-print text-emerald-400 text-base"></i> طباعة وحفظ PDF
@@ -524,11 +543,11 @@
                                 <div class="grid grid-cols-3 gap-1.5 shrink-0 w-full lg:w-auto">
                                     <label class="cursor-pointer flex items-center justify-center gap-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 py-1.5 px-3 rounded-xl text-xs font-bold transition">
                                         <input type="radio" name="${fieldName}" value="pass" class="accent-emerald-600">
-                                        <span>مطبق / سليم</span>
+                                        <span>نعم</span>
                                     </label>
                                     <label class="cursor-pointer flex items-center justify-center gap-1 bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 py-1.5 px-3 rounded-xl text-xs font-bold transition">
                                         <input type="radio" name="${fieldName}" value="fail" class="accent-red-600">
-                                        <span>ملاحظة</span>
+                                        <span>لا</span>
                                     </label>
                                     <label class="cursor-pointer flex items-center justify-center gap-1 bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-300 py-1.5 px-3 rounded-xl text-xs font-bold transition">
                                         <input type="radio" name="${fieldName}" value="na" checked class="accent-slate-500">
